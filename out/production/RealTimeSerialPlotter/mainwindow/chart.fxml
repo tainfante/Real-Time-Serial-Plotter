@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
-<?import javafx.scene.chart.LineChart?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="mainwindow.Chart"
-            prefHeight="180.0" prefWidth="200.0">
-    <children>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane minHeight="325.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.Chart">
+    <center>
             <LineChart layoutY="37.0" prefHeight="226.0" prefWidth="455.0">
                 <xAxis>
                     <CategoryAxis side="BOTTOM" />
@@ -22,18 +20,35 @@
                     <NumberAxis side="LEFT" />
                 </yAxis>
             </LineChart>
-            <RadioButton layoutX="474.0" layoutY="87.0" mnemonicParsing="false" text="Channel 3" />
-            <RadioButton layoutX="474.0" layoutY="104.0" mnemonicParsing="false" text="Channel 4" />
-            <RadioButton layoutX="474.0" layoutY="121.0" mnemonicParsing="false" text="Channel 5" />
-            <RadioButton layoutX="474.0" layoutY="142.0" mnemonicParsing="false" text="Channel 6" />
-            <RadioButton layoutX="474.0" layoutY="161.0" mnemonicParsing="false" text="Channel 7" />
-            <RadioButton layoutX="474.0" layoutY="178.0" mnemonicParsing="false" text="Channel 8" />
-            <RadioButton layoutX="474.0" layoutY="53.0" mnemonicParsing="false" text="Channel 1" />
-            <RadioButton layoutX="474.0" layoutY="70.0" mnemonicParsing="false" text="Channel 2" />
-            <Button layoutX="114.0" layoutY="263.0" mnemonicParsing="false" text="START" />
-            <Button layoutX="176.0" layoutY="263.0" mnemonicParsing="false" text="STOP" />
-            <CheckBox layoutX="475.0" layoutY="205.0" mnemonicParsing="false" text="CheckBox" />
-        </children>
-</AnchorPane>
+    </center>
+    <right>
+        <VBox spacing="10.0" BorderPane.alignment="CENTER">
+            <CheckBox alignment="CENTER" layoutX="474.0" layoutY="87.0" mnemonicParsing="false" text="Channel 3" />
+            <CheckBox layoutX="474.0" layoutY="104.0" mnemonicParsing="false" text="Channel 4" />
+            <CheckBox layoutX="474.0" layoutY="121.0" mnemonicParsing="false" text="Channel 5" />
+            <CheckBox layoutX="474.0" layoutY="142.0" mnemonicParsing="false" text="Channel 6" />
+            <CheckBox layoutX="474.0" layoutY="161.0" mnemonicParsing="false" text="Channel 7" />
+            <CheckBox layoutX="474.0" layoutY="178.0" mnemonicParsing="false" text="Channel 8" />
+            <CheckBox layoutX="474.0" layoutY="53.0" mnemonicParsing="false" text="Channel 1" />
+            <CheckBox layoutX="474.0" layoutY="70.0" mnemonicParsing="false" text="Channel 2" />
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+        </VBox>
 
 
+    </right>
+       <bottom>
+           <HBox spacing="10.0">
+               <Button layoutX="114.0" layoutY="263.0" mnemonicParsing="false" text="START" />
+               <Button layoutX="176.0" layoutY="263.0" mnemonicParsing="false" text="STOP" />
+         <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </BorderPane.margin>
+           </HBox>
+
+       </bottom>
+</BorderPane>
