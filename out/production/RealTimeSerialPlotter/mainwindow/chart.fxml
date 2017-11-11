@@ -6,9 +6,34 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <AnchorPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="mainwindow.Chart"
-            prefHeight="400.0" prefWidth="600.0">
-
+            prefHeight="180.0" prefWidth="200.0">
+    <children>
+            <LineChart layoutY="37.0" prefHeight="226.0" prefWidth="455.0">
+                <xAxis>
+                    <CategoryAxis side="BOTTOM" />
+                </xAxis>
+                <yAxis>
+                    <NumberAxis side="LEFT" />
+                </yAxis>
+            </LineChart>
+            <RadioButton layoutX="474.0" layoutY="87.0" mnemonicParsing="false" text="Channel 3" />
+            <RadioButton layoutX="474.0" layoutY="104.0" mnemonicParsing="false" text="Channel 4" />
+            <RadioButton layoutX="474.0" layoutY="121.0" mnemonicParsing="false" text="Channel 5" />
+            <RadioButton layoutX="474.0" layoutY="142.0" mnemonicParsing="false" text="Channel 6" />
+            <RadioButton layoutX="474.0" layoutY="161.0" mnemonicParsing="false" text="Channel 7" />
+            <RadioButton layoutX="474.0" layoutY="178.0" mnemonicParsing="false" text="Channel 8" />
+            <RadioButton layoutX="474.0" layoutY="53.0" mnemonicParsing="false" text="Channel 1" />
+            <RadioButton layoutX="474.0" layoutY="70.0" mnemonicParsing="false" text="Channel 2" />
+            <Button layoutX="114.0" layoutY="263.0" mnemonicParsing="false" text="START" />
+            <Button layoutX="176.0" layoutY="263.0" mnemonicParsing="false" text="STOP" />
+            <CheckBox layoutX="475.0" layoutY="205.0" mnemonicParsing="false" text="CheckBox" />
+        </children>
 </AnchorPane>
+
+
