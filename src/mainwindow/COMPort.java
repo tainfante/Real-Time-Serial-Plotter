@@ -1,6 +1,7 @@
 package mainwindow;
 
 
-public class COMPort {
+public class COMPort
+{
 
 }

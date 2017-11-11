@@ -10,7 +10,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("/mainwindow/mainwindow.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/mainwindow/mainWindowLayout.fxml"));
         primaryStage.setTitle("Real Time Serial Plotter");
         primaryStage.setScene(new Scene(root, 600, 400));
         primaryStage.setMinHeight(450.0);
