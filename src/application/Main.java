@@ -13,6 +13,9 @@ public class Main extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("/mainwindow/mainwindow.fxml"));
         primaryStage.setTitle("Real Time Serial Plotter");
         primaryStage.setScene(new Scene(root, 600, 400));
+        primaryStage.setMinHeight(450.0);
+        primaryStage.setMinWidth(620.0);
+
         primaryStage.show();
     }
 
