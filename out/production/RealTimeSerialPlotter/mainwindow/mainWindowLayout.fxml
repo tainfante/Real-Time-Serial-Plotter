@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+<?import javafx.scene.layout.VBox?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="400.0" minWidth="600.0" prefHeight="403.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1">
+
+      <center>
+      <TabPane layoutY="52.0" prefHeight="314.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Chart">
+            <content>
+                <fx:include source="chart.fxml" />
+            </content>
+          </Tab>
+          <Tab text="Channel settings">
+            <content>
+                <fx:include source="channel.fxml" />
+            </content>
+          </Tab>
+            <Tab text="Export">
+                <content>
+                    <fx:include source="export.fxml" />
+                </content>
+            </Tab>
+            <Tab text="Log">
+                <content>
+                    <fx:include source="log.fxml" />
+                </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+       </center>
+
+   <top>
+       <VBox prefHeight="50.0" prefWidth="600.0">
+       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="600.0">
+           <menus>
+               <Menu mnemonicParsing="false" text="File">
+                   <items>
+                       <MenuItem mnemonicParsing="false" text="Exit" />
+                       <MenuItem mnemonicParsing="false" text="" />
+                   </items>
+               </Menu>
+               <Menu mnemonicParsing="false" text="Edit">
+                   <items>
+                       <MenuItem mnemonicParsing="false" text="Delete" />
+                   </items>
+               </Menu>
+               <Menu mnemonicParsing="false" text="Help">
+                   <items>
+                       <MenuItem mnemonicParsing="false" text="About" />
+                   </items>
+               </Menu>
+               <Menu mnemonicParsing="false" text="Unspecified Menu">
+                   <items>
+                       <MenuItem mnemonicParsing="false" text="Action 1" />
+                   </items>
+               </Menu>
+           </menus>
+       </MenuBar>
+       <HBox layoutY="27.0" prefHeight="25.0" prefWidth="600.0">
+            <fx:include source="comPortLayout.fxml" />
+       </HBox>
+       </VBox>
+   </top>
+</BorderPane>
