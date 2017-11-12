@@ -23,14 +23,14 @@
     </center>
     <right>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
-            <CheckBox alignment="CENTER" layoutX="474.0" layoutY="87.0" mnemonicParsing="false" text="Channel 3" />
-            <CheckBox layoutX="474.0" layoutY="104.0" mnemonicParsing="false" text="Channel 4" />
-            <CheckBox layoutX="474.0" layoutY="121.0" mnemonicParsing="false" text="Channel 5" />
-            <CheckBox layoutX="474.0" layoutY="142.0" mnemonicParsing="false" text="Channel 6" />
-            <CheckBox layoutX="474.0" layoutY="161.0" mnemonicParsing="false" text="Channel 7" />
-            <CheckBox layoutX="474.0" layoutY="178.0" mnemonicParsing="false" text="Channel 8" />
-            <CheckBox layoutX="474.0" layoutY="53.0" mnemonicParsing="false" text="Channel 1" />
-            <CheckBox layoutX="474.0" layoutY="70.0" mnemonicParsing="false" text="Channel 2" />
+            <CheckBox layoutX="474.0" layoutY="87.0" mnemonicParsing="false" text="Channel 1" />
+            <CheckBox layoutX="474.0" layoutY="104.0" mnemonicParsing="false" text="Channel 2" />
+            <CheckBox layoutX="474.0" layoutY="121.0" mnemonicParsing="false" text="Channel 3" />
+            <CheckBox layoutX="474.0" layoutY="142.0" mnemonicParsing="false" text="Channel 4" />
+            <CheckBox layoutX="474.0" layoutY="161.0" mnemonicParsing="false" text="Channel 5" />
+            <CheckBox layoutX="474.0" layoutY="178.0" mnemonicParsing="false" text="Channel 6" />
+            <CheckBox layoutX="474.0" layoutY="53.0" mnemonicParsing="false" text="Channel 7" />
+            <CheckBox layoutX="474.0" layoutY="70.0" mnemonicParsing="false" text="Channel 8" />
          <BorderPane.margin>
             <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
          </BorderPane.margin>
