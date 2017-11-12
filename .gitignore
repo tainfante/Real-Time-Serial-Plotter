@@ -1,3 +1,8 @@
+# Compiled class file
+*.class
+
+# Output files
+out/
 
 \.idea/misc\.xml
 

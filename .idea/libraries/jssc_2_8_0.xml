@@ -1,7 +1,7 @@
 <component name="libraryTable">
-  <library name="RXTXcomm">
+  <library name="jssc-2.8.0">
     <CLASSES>
-      <root url="jar://C:/Program Files/Java/jdk-9.0.1/lib/RXTXcomm.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Resources/jssc-2.8.0.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
