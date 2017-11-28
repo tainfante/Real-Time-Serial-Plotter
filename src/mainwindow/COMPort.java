@@ -1,20 +1,27 @@
 package mainwindow;
 
-import javafx.scene.control.Toggle;
-import jssc.SerialPort;
-import jssc.SerialPortException;
-import jssc.SerialPortTimeoutException;
+import com.fazecast.jSerialComm.SerialPort;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 
-public class COMPort
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class COMPort implements Initializable
 {
+    @FXML
+    Button connectButton;
+
+    @FXML
+    ComboBox<String> selectPortComboBox, selectBaudrateComboBox;
+
     private static volatile COMPort PortINSTANCE;
 
     private SerialPort serialPort;
 
     private int baudRate = 115200;
-    private int dataBits;
-    private int stopBits;
-    private int parityBits;
 
     private boolean stopReading = false;
 
@@ -38,82 +45,71 @@ public class COMPort
         return PortINSTANCE;
     }
 
+    @Override
+    public void initialize(URL location, ResourceBundle resources)
+    {
+        for (SerialPort port : SerialPort.getCommPorts())
+        {
+            selectPortComboBox.getItems().add(port.getDescriptivePortName());
+        }
+
+        if(!selectPortComboBox.getItems().isEmpty())
+        {
+            selectPortComboBox.getSelectionModel().select(0);
+        }
+
+        // ============= Baud Rate ComboBox initial values ===========================
+        selectBaudrateComboBox.getItems().add("9600");
+        selectBaudrateComboBox.getItems().add("14400");
+        selectBaudrateComboBox.getItems().add("19200");
+        selectBaudrateComboBox.getItems().add("38400");
+        selectBaudrateComboBox.getItems().add("56000");
+        selectBaudrateComboBox.getItems().add("57600");
+        selectBaudrateComboBox.getItems().add("115200");
+        selectBaudrateComboBox.getItems().add("128000");
+        selectBaudrateComboBox.getItems().add("230400");
+        selectBaudrateComboBox.getItems().add("256000");
+        selectBaudrateComboBox.getItems().add("460800");
+        selectBaudrateComboBox.getItems().add("921600");
+        selectBaudrateComboBox.getItems().add("1000000");
+        selectBaudrateComboBox.getItems().add("2000000");
+        selectBaudrateComboBox.getItems().add("3000000");
+        selectBaudrateComboBox.getSelectionModel().select(String.valueOf(getBaudRate()));
+        // ===========================================================================
+
+    }
+
     public void setBaudRate(int baudRate)
     {
+        this.baudRate = baudRate;
+
         if( null != serialPort)
-        {
-            this.baudRate = baudRate;
-
-            updateParams();
-        }
+            serialPort.setBaudRate(baudRate);
     }
 
-    public void setParity(Toggle newValue)
-    {
-        if( null != serialPort )
-        {
-            this.parityBits = (int) newValue.getUserData();
-
-            updateParams();
-        }
-    }
-
-    public void setNumDataBits(Toggle newValue)
-    {
-        if( null != serialPort )
-        {
-            this.dataBits = (int)newValue.getUserData();
-
-            updateParams();
-        }
-    }
-
-    public void setNumStopBits(Toggle newValue)
-    {
-        if( null != serialPort )
-        {
-            this.stopBits = (int) newValue.getUserData();
-
-            updateParams();
-        }
-    }
 
     public boolean open(String serialPortName, int dataBits, int stopBits, int parityBits)
     {
-        this.dataBits = dataBits;
-        this.stopBits = stopBits;
-        this.parityBits = parityBits;
-
         if(null != serialPortName)
         {
-            serialPort = new SerialPort(serialPortName);
-            try
-            {
-                serialPort.setParams(baudRate, dataBits, stopBits, parityBits);
-            }
-            catch (SerialPortException e)
-            {
-                e.printStackTrace();
-            }
+            serialPort = SerialPort.getCommPort(serialPortName);
+            serialPort.setComPortParameters(baudRate, dataBits, stopBits, parityBits);
+
+            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 100, 100);
 
             // create new thread and listen for every byte and after that send him to display on Received Text Area in DataTabController
-            new Thread(() ->
-            {
-                byte[] oneChar;
-
-                while(!stopReading)
-                {
-                    try
-                    {
-                        oneChar = serialPort.readBytes(1, 1);
-                        //dataTabInterface.displayByte(oneChar[0]);
-                    }
-                    catch (SerialPortException | SerialPortTimeoutException e)
-                    {
-                        e.printStackTrace();
-                    }
-                }
-            }).start();
+//            new Thread(() ->
+//            {
+//                byte[] oneChar = new byte[1];
+//
+//                while(!stopReading)
+//                {
+//                    if ( 0 < serialPort.readBytes(oneChar, 1) )
+//                    {
+//                        //dataTabInterface.displayByte(oneChar[0]);
+//                    }
+//                }
+//            }).start();
 
             try
             {
@@ -127,20 +123,13 @@ public class COMPort
 
     public boolean close()
     {
-        boolean isOpened = false;
+        boolean isClosed = false;
 
         if(null != serialPort)
         {
-            try
-            {
-                isOpened = serialPort.closePort();
-            }
-            catch (SerialPortException e)
-            {
-                e.printStackTrace();
-            }
+            isClosed = serialPort.closePort();
 
-            if (!serialPort.isOpened())
+            if (!serialPort.isOpen())
             {
                 stopReading = true;
 
@@ -148,23 +137,16 @@ public class COMPort
             }
         }
 
-        return isOpened;
+        return isClosed;
     }
 
     public void send(byte[] buffer)
     {
         if(null != serialPort)
         {
-            if ( serialPort.isOpened() )
+            if ( serialPort.isOpen() )
             {
-                try
-                {
-                    serialPort.writeBytes(buffer);
-                }
-                catch (SerialPortException e)
-                {
-                    e.printStackTrace();
-                }
+                serialPort.writeBytes(buffer, buffer.length);
             }
         }
     }
@@ -173,7 +155,7 @@ public class COMPort
     {
         if ( null != serialPort )
         {
-            return serialPort.isOpened() ? serialPort.getPortName() : "";
+            return serialPort.isOpen() ? serialPort.getSystemPortName() : "";
         }
         else
         {
@@ -181,19 +163,42 @@ public class COMPort
         }
     }
 
-    private boolean updateParams()
+    public void onActionSelectPort()
     {
-        try
-        {
-            serialPort.setParams(baudRate, dataBits, stopBits, parityBits);
-        }
-        catch (SerialPortException e)
-        {
-            e.printStackTrace();
 
-            return false;
+    }
+
+    public void onActionSelectBaudrate()
+    {
+
+    }
+
+    public void onActionConnectButton()
+    {
+        if ( connectButton.getText().equals("Connect"))
+        {
+            if ( null != selectPortComboBox.getSelectionModel().getSelectedItem() )
+            {
+                String systemPortName = selectPortComboBox.getSelectionModel().getSelectedItem();
+                systemPortName = systemPortName.substring(systemPortName.indexOf("(")+1, systemPortName.indexOf(")"));
+
+                if (open(systemPortName, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY))
+                {
+                    connectButton.setText("Disconnect");
+                    //Logger.getInstance().log("Port is opened.");
+                    //StatusBar.getInstance().setOpenedPortStatus(true);
+                }
+            }
+        }
+        else
+        {
+            if (close())
+            {
+                connectButton.setText("Connect");
+                //Logger.getInstance().log("Port is opened.");
+                //StatusBar.getInstance().setOpenedPortStatus(true);
+            }
         }
 
-        return true;
     }
 }
