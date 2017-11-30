@@ -65,7 +65,7 @@
    
               </menus>
           </MenuBar>
-            <fx:include source="comPortLayout.fxml" />
+            <fx:include source="portView.fxml" />
           </children>
        </VBox>
    </top>
