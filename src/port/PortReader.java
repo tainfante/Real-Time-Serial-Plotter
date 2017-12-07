@@ -37,7 +37,7 @@ public class PortReader extends Port
         return PortReaderINSTANCE;
     }
 
-    private int readFrame()
+    private int readFrame() throws Exception
     {
         byte element = 0;                                           // variable for read one byte
         short cntBytes = 0;
@@ -47,7 +47,7 @@ public class PortReader extends Port
 
         while ((START_BYTE & 0xFF) != (element & 0xFF))             // & 0xFF <- to obtain a unsigned value
         {
-            element = readByte();
+                element = readByte();
         }
 
         bufferIn.clear();
@@ -145,15 +145,28 @@ public class PortReader extends Port
     public void startReading()
     {
         // create a new thread and listen for frame, then display it in Log tab
-        new Thread(() ->
+        Thread thread = new Thread(() ->
         {
+            System.out.println("Started reading thread.");
+
             bufferIn = new ArrayList<>();
 
             while(!stopReading)
             {
-                Log.getInstance().log("Overall received and decoded number of bytes: " + readFrame());
+                try
+                {
+                    Log.getInstance().log("Overall received and decoded number of bytes: " + readFrame());
+                }
+                catch (Exception e)
+                {
+                    break;
+                }
             }
 
-        }).start();
+            System.out.println("Stopped reading thread.");
+
+        });
+        thread.setName("Reading Thread");
+        thread.start();
     }
 }
