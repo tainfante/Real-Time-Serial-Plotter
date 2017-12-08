@@ -2,7 +2,7 @@ package classes;
 
 public class Frame {
 
-    private byte length;
+    private byte number_of_channels;
     private Integer channel_1_data;
     private Integer channel_2_data;
     private Integer channel_3_data;
@@ -15,37 +15,37 @@ public class Frame {
 
     //Constructors
 
-    public Frame(String time, byte length, Integer channel_1_data) {
-        this.length = length;
+    public Frame(String time, byte number_of_channels, Integer channel_1_data) {
+        this.number_of_channels = number_of_channels;
         this.channel_1_data = channel_1_data;
         this.time = time;
     }
-    public Frame(String time, byte length, Integer channel_1_data, Integer channel_2_data) {
-        this.length=length;
+    public Frame(String time, byte number_of_channels, Integer channel_1_data, Integer channel_2_data) {
+        this.number_of_channels = number_of_channels;
         this.channel_1_data = channel_1_data;
         this.channel_2_data = channel_2_data;
         this.time = time;
     }
-    public Frame(String time, byte length, Integer channel_1_data, Integer channel_2_data,
+    public Frame(String time, byte number_of_channels, Integer channel_1_data, Integer channel_2_data,
                  Integer channel_3_data) {
-        this.length=length;
+        this.number_of_channels = number_of_channels;
         this.channel_1_data = channel_1_data;
         this.channel_2_data = channel_2_data;
         this.channel_3_data = channel_3_data;
         this.time = time;
     }
-    public Frame(String time, byte length, Integer channel_1_data, Integer channel_2_data,
+    public Frame(String time, byte number_of_channels, Integer channel_1_data, Integer channel_2_data,
                  Integer channel_3_data, Integer channel_4_data) {
-        this.length=length;
+        this.number_of_channels = number_of_channels;
         this.channel_1_data = channel_1_data;
         this.channel_2_data = channel_2_data;
         this.channel_3_data = channel_3_data;
         this.channel_4_data = channel_4_data;
         this.time = time;
     }
-    public Frame(String time, byte length, Integer channel_1_data, Integer channel_2_data,
+    public Frame(String time, byte number_of_channels, Integer channel_1_data, Integer channel_2_data,
                  Integer channel_3_data, Integer channel_4_data, Integer channel_5_data) {
-        this.length=length;
+        this.number_of_channels = number_of_channels;
         this.channel_1_data = channel_1_data;
         this.channel_2_data = channel_2_data;
         this.channel_3_data = channel_3_data;
@@ -53,10 +53,10 @@ public class Frame {
         this.channel_5_data = channel_5_data;
         this.time = time;
     }
-    public Frame(String time, byte length, Integer channel_1_data, Integer channel_2_data,
+    public Frame(String time, byte number_of_channels, Integer channel_1_data, Integer channel_2_data,
                  Integer channel_3_data, Integer channel_4_data, Integer channel_5_data,
                  Integer channel_6_data) {
-        this.length=length;
+        this.number_of_channels = number_of_channels;
         this.channel_1_data = channel_1_data;
         this.channel_2_data = channel_2_data;
         this.channel_3_data = channel_3_data;
@@ -65,10 +65,10 @@ public class Frame {
         this.channel_6_data = channel_6_data;
         this.time = time;
     }
-    public Frame(String time, byte length, Integer channel_1_data, Integer channel_2_data,
+    public Frame(String time, byte number_of_channels, Integer channel_1_data, Integer channel_2_data,
                  Integer channel_3_data, Integer channel_4_data, Integer channel_5_data,
                  Integer channel_6_data, Integer channel_7_data) {
-        this.length=length;
+        this.number_of_channels = number_of_channels;
         this.channel_1_data = channel_1_data;
         this.channel_2_data = channel_2_data;
         this.channel_3_data = channel_3_data;
@@ -78,10 +78,10 @@ public class Frame {
         this.channel_7_data = channel_7_data;
         this.time = time;
     }
-    public Frame(String time, byte length, Integer channel_1_data, Integer channel_2_data,
+    public Frame(String time, byte number_of_channels, Integer channel_1_data, Integer channel_2_data,
                  Integer channel_3_data, Integer channel_4_data, Integer channel_5_data,
                  Integer channel_6_data, Integer channel_7_data, Integer channel_8_data) {
-        this.length=length;
+        this.number_of_channels = number_of_channels;
         this.channel_1_data = channel_1_data;
         this.channel_2_data = channel_2_data;
         this.channel_3_data = channel_3_data;
@@ -95,8 +95,8 @@ public class Frame {
 
     //Setters
 
-    public void setLength(byte length) {
-        this.length = length;
+    public void setNumber_of_channels(byte number_of_channels) {
+        this.number_of_channels = number_of_channels;
     }
 
     public void setChannel_1_data(Integer channel_1_data) {
@@ -137,8 +137,8 @@ public class Frame {
 
     //Getters
 
-    public byte getLength() {
-        return length;
+    public byte getNumber_of_channels() {
+        return number_of_channels;
     }
 
     public Integer getChannel_1_data() {
