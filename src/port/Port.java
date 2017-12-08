@@ -39,26 +39,23 @@ public class Port
         }
     }
 
-    byte readByte() throws Exception
+    int readByte(byte[] oneChar)
     {
-        byte[] oneChar = new byte[1];
-
         if(null != serialPort)
         {
             if ( serialPort.isOpen() )
             {
-                if ( -1 < serialPort.readBytes(oneChar, 1) )
-                {
-                    return oneChar[0];
-                }
-                else
-                {
-                    oneChar[0] = 1;
-                }
+                return serialPort.readBytes(oneChar, 1);
+            }
+            else
+            {
+                return -1;
             }
         }
-
-        throw new Exception("Port is closed.");
+        else
+        {
+            return -1;
+        }
     }
 
     public boolean open(String serialPortName, int dataBits, int stopBits, int parityBits)
@@ -68,7 +65,7 @@ public class Port
             serialPort = SerialPort.getCommPort(serialPortName);
             serialPort.setComPortParameters(baudRate, dataBits, stopBits, parityBits);
 
-            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
+            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 1, 0);
 
             stopReading = false;
 
@@ -94,7 +91,7 @@ public class Port
             {
                 stopReading = true;
 
-                //serialPort = null;
+                serialPort = null;
             }
         }
 

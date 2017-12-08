@@ -15,11 +15,13 @@ public class PortReader extends Port
 
     private static volatile PortReader PortReaderINSTANCE;
 
+    private Thread readingThread = null;
+
     private ArrayList<Byte> bufferIn;
 
     private PortReader()
     {
-
+        bufferIn = new ArrayList<>();
     }
 
     public static PortReader getInstance()
@@ -37,28 +39,27 @@ public class PortReader extends Port
         return PortReaderINSTANCE;
     }
 
-    private int readFrame() throws Exception
-    {
-        byte element = 0;                                           // variable for read one byte
+    private int readFrame()
+    {                                         // variable for read one byte
         short cntBytes = 0;
         int readedBytes = 0;
+        byte[] element = new byte[1];
 
         boolean listening = true;
-
-        while ((START_BYTE & 0xFF) != (element & 0xFF))             // & 0xFF <- to obtain a unsigned value
-        {
-                element = readByte();
-        }
+        boolean wasStarted = false;
 
         bufferIn.clear();
 
         while (listening)
         {
-            element = readByte();                                   // read one byte
-
-            if ((STOP_BYTE & 0xFF) == (element & 0xFF))             // if element == STOP byte then decode received frame
+            if ( 0 > readByte(element) )                                    // read one byte
             {
-                if (0 != bufferIn.size())
+                break;
+            }
+
+            if ((STOP_BYTE & 0xFF) == (element[0] & 0xFF))             // if element == STOP byte then decode received frame
+            {
+                if (!bufferIn.isEmpty())
                 {
                     // ========================== for debug =====================================
                     StringBuilder receivedData = new StringBuilder("Received data: ");
@@ -73,24 +74,25 @@ public class PortReader extends Port
                     Log.getInstance().log(receivedData.toString());
                     // ============================================================================
 
-
                     readedBytes = decodePayload();
 
+                    // store in linkedBlockedQueue
 
-                    // place for interface to handle of data
+                    listening = false;
                 }
 
-                listening = false;
+                wasStarted = false;
             }
-            else if ((START_BYTE & 0xFF) == (element & 0xFF))       //if element == START byte then start listening again
+            else if ((START_BYTE & 0xFF) == (element[0] & 0xFF))       //if element == START byte then start listening again
             {
+                wasStarted = true;
                 bufferIn.clear();
             }
-            else                                                    //else save element in buffer
+            else if(wasStarted)                                        //else save element in buffer
             {
                 if (cntBytes < MAX_FRAME_SIZE)
                 {
-                    bufferIn.add(element);
+                    bufferIn.add(element[0]);
                     cntBytes++;
                 }
                 else
@@ -145,28 +147,24 @@ public class PortReader extends Port
     public void startReading()
     {
         // create a new thread and listen for frame, then display it in Log tab
-        Thread thread = new Thread(() ->
+
+        readingThread = new Thread(() ->
         {
             System.out.println("Started reading thread.");
 
-            bufferIn = new ArrayList<>();
-
             while(!stopReading)
             {
-                try
+                int readedBytes;
+
+                if ( (readedBytes = readFrame()) > 0)
                 {
-                    Log.getInstance().log("Overall received and decoded number of bytes: " + readFrame());
-                }
-                catch (Exception e)
-                {
-                    break;
+                    Log.getInstance().log("Overall received and decoded number of bytes: " + readedBytes);
                 }
             }
 
             System.out.println("Stopped reading thread.");
-
         });
-        thread.setName("Reading Thread");
-        thread.start();
+        readingThread.setName("FrameReadingThread");
+        readingThread.start();
     }
 }
