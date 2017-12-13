@@ -10,6 +10,11 @@ public class Port
 
     volatile boolean stopReading = false;
 
+    public void setStopReading(boolean stopReading)
+    {
+        this.stopReading = stopReading;
+    }
+
     Port()
     {
 
