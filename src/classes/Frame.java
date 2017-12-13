@@ -2,17 +2,18 @@ package classes;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 
 public class Frame {
 
     private byte number_of_channels;
-    private Integer[] channel_data=new Integer[10];
+    ArrayList<Integer> channel_data=new ArrayList<>();
     private String formattedTime;
     private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME ;
 
     //Constructors
 
-    public Frame(Integer[] channel_data) {
+    public Frame(ArrayList<Integer> channel_data) {
         this.channel_data = channel_data;
         LocalTime time=LocalTime.now();
         formattedTime = formatter.format(time);
@@ -25,7 +26,7 @@ public class Frame {
         this.number_of_channels = number_of_channels;
     }
 
-    public void setChannel_data(Integer[] channel_data) {
+    public void setChannel_data(ArrayList<Integer> channel_data) {
         this.channel_data = channel_data;
     }
 
@@ -39,7 +40,7 @@ public class Frame {
         return number_of_channels;
     }
 
-    public Integer[] getChannel_data() {
+    public ArrayList<Integer> getChannel_data() {
         return channel_data;
     }
 
