@@ -12,12 +12,12 @@
 
 <BorderPane minHeight="325.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.Chart">
     <center>
-            <LineChart layoutY="37.0" prefHeight="226.0" prefWidth="455.0">
+            <LineChart fx:id="lchart" layoutY="37.0" prefHeight="226.0" prefWidth="455.0">
                 <xAxis>
-                    <CategoryAxis side="BOTTOM" />
+                    <CategoryAxis fx:id="xAxis" side="BOTTOM" />
                 </xAxis>
                 <yAxis>
-                    <NumberAxis side="LEFT" />
+                    <NumberAxis fx:id="yAxis" side="LEFT" />
                 </yAxis>
             </LineChart>
     </center>
