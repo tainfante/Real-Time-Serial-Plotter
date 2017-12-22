@@ -1,6 +1,7 @@
 package port;
 
 import classes.Frame;
+import mainwindow.Log;
 
 import java.util.ArrayList;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -13,8 +14,8 @@ public class PortReader extends Port
     private static final byte CHG_BYTE = (byte) 0xA5;
 
     /* maximum is 8 channels where every channel has 1 int value which value it is contained in 4 bytes,
-    so all maximum number of bytes will be 4*8 + one byte of size */
-    private static final byte MAX_FRAME_SIZE = 33;
+    so all maximum number of bytes will be 4*8 + one byte of size + all possible bytes CHG  */
+    private static final byte MAX_FRAME_SIZE = 68;
 
     private static volatile PortReader PortReaderINSTANCE;
 
@@ -70,20 +71,35 @@ public class PortReader extends Port
                 {
                     bufferIn = decodePayload(bufferIn);
 
-                    // TODO: validate data
+                    int receivedChecksum = ((bufferIn.get(bufferIn.size()-2) & 0xFF) << 8) | bufferIn.get(bufferIn.size()-1) & 0xFF;
 
-                    try
+                    bufferIn.remove(bufferIn.size()-1);         // remove from buffer received checksum
+                    bufferIn.remove(bufferIn.size()-1);
+
+                    if ( new CRC16().generateCRC16CCITT(bufferIn) == receivedChecksum)
                     {
-                        frame = mapToFrame(bufferIn);
+                        System.out.println("Checksum is right.");
 
-                        listening = false;
+                        try
+                        {
+                            frame = mapToFrame(bufferIn);
+
+                            System.out.println("Buffer mapped to object of Frame type.");
+
+                            listening = false;
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                            wasStarted = false;
+                            bufferIn.clear();
+                            cntBytes = 0;
+                        }
                     }
-                    catch (Exception e)
+                    else
                     {
-                        e.printStackTrace();
-                        wasStarted = false;
-                        bufferIn.clear();
-                        cntBytes = 0;
+                        Log.getInstance().log("Received frame is wrong.");
+                        listening = false;
                     }
                 }
                 else
@@ -148,7 +164,7 @@ public class PortReader extends Port
 
         for (int i = 0, k = 0; i < numberOfChannels; i++)
         {
-            mappedValues.add( ((bytes.get(++k) & 0xFF) << 24) | ((bytes.get(++k) & 0xFF) << 16) | ((bytes.get(++k) & 0xFF) << 8) | (bytes.get(++k) & 0xFF));
+            mappedValues.add( ((bytes.get(++k) & 0xFF) << 24) | ((bytes.get(++k) & 0xFF) << 16) | ((bytes.get(++k) & 0xFF) << 8) | (bytes.get(++k) & 0xFF) );
         }
 
         return new Frame(mappedValues);
@@ -169,8 +185,12 @@ public class PortReader extends Port
 
                     if ( null != frame )
                     {
-                        frameBuffer.put(readFrame());
+                        frameBuffer.put(frame);
                         System.out.println("New frame is added.");
+                    }
+                    else
+                    {
+                        System.out.println("Read frame was a null.");
                     }
                 }
                 catch (InterruptedException e)
