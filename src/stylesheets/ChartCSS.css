@@ -1,0 +1,26 @@
+.root {
+
+}
+.background {
+    -fx-background-color: #444444;
+}
+.checkedBox{
+    -fx-text-fill: yellow;
+    -fx-font-size: 15px;
+}
+.uncheckedBox{
+
+}
+.title{
+
+}
+.axis{
+
+}
+#lchart{
+    -fx-background-color: #444444;
+
+
+}
+
+
