@@ -1,10 +1,15 @@
 package port;
 
-import com.fazecast.jSerialComm.SerialPort;
+import mainwindow.Log;
+import purejavacomm.CommPortIdentifier;
+import purejavacomm.SerialPort;
+import purejavacomm.UnsupportedCommOperationException;
+
+import java.io.IOException;
 
 public class Port
 {
-    private volatile SerialPort serialPort = null;
+    private volatile SerialPort port = null;
 
     private int baudRate = 115200;
 
@@ -29,31 +34,46 @@ public class Port
     {
         this.baudRate = baudRate;
 
-        if( null != serialPort)
-            serialPort.setBaudRate(baudRate);
-    }
-
-    public void send(byte[] buffer)
-    {
-        if(null != serialPort)
+        if( null != port)
         {
-            if ( serialPort.isOpen() )
+            try
             {
-                serialPort.writeBytes(buffer, buffer.length);
+                port.setSerialPortParams(baudRate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            }
+            catch (UnsupportedCommOperationException e)
+            {
+                e.printStackTrace();
             }
         }
     }
 
-    int readByte(byte[] oneChar)
+    public void send(byte[] buffer)
     {
-        if(null != serialPort)
+        if(null != port)
         {
-            if ( serialPort.isOpen() )
+            try
             {
-                return serialPort.readBytes(oneChar, 1);
+                port.getOutputStream().write(buffer);
             }
-            else
+            catch (IOException e)
             {
+                e.printStackTrace();
+            }
+
+        }
+    }
+
+    int readByte()
+    {
+        if(null != port)
+        {
+            try
+            {
+                return port.getInputStream().read();
+            }
+            catch (IOException e)
+            {
+                System.out.println("The reading attempt failed due to the port being closed.");
                 return -1;
             }
         }
@@ -65,44 +85,38 @@ public class Port
 
     public boolean open(String serialPortName, int dataBits, int stopBits, int parityBits)
     {
-        if(null != serialPortName)
+        try
         {
-            serialPort = SerialPort.getCommPort(serialPortName);
-            serialPort.setComPortParameters(baudRate, dataBits, stopBits, parityBits);
-
-            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
+            CommPortIdentifier portId = CommPortIdentifier.getPortIdentifier(serialPortName);
+            port = (SerialPort) portId.open("RealTimeSerialPlotter", 1000);
+            port.setSerialPortParams(baudRate, dataBits, stopBits, parityBits);
 
             stopReading = false;
 
-            try
-            {
-                return (serialPort.openPort());
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-                return false;
-            }
+            return true;
         }
+        catch (Throwable thwble)
+        {
+            Log.getInstance().log("An attempt to open the port was unsuccessful.");
+            thwble.printStackTrace();
 
-        return false;
+            return false;
+        }
     }
 
     public boolean close()
     {
         boolean isClosed = false;
 
-
-        if(null != serialPort)
+        if(null != port)
         {
-            isClosed = serialPort.closePort();
+            port.close();
 
-            if (!serialPort.isOpen())
-            {
-                stopReading = true;
+            stopReading = true;
 
-                serialPort = null;
-            }
+            port = null;
+
+            isClosed = true;
         }
 
         return isClosed;
