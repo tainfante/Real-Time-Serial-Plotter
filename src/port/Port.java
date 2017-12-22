@@ -70,7 +70,7 @@ public class Port
             serialPort = SerialPort.getCommPort(serialPortName);
             serialPort.setComPortParameters(baudRate, dataBits, stopBits, parityBits);
 
-            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 1, 0);
+            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
 
             stopReading = false;
 
@@ -78,7 +78,11 @@ public class Port
             {
                 return (serialPort.openPort());
             }
-            catch (Exception e){ return false; }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return false;
+            }
         }
 
         return false;
@@ -87,6 +91,7 @@ public class Port
     public boolean close()
     {
         boolean isClosed = false;
+
 
         if(null != serialPort)
         {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class CRC16
 {
-    int[] crc16ccittTab = {
+    private static int[] crc16ccittTab = {
             0x0000,0x1021,0x2042,0x3063,0x4084,0x50a5,0x60c6,0x70e7,
             0x8108,0x9129,0xa14a,0xb16b,0xc18c,0xd1ad,0xe1ce,0xf1ef,
             0x1231,0x0210,0x3273,0x2252,0x52b5,0x4294,0x72f7,0x62d6,
@@ -48,40 +48,15 @@ public class CRC16
     // ============================================================================================================================
     public int generateCRC16CCITT(ArrayList<Byte> buff)
     {
-        int crc = 0x0000;
-        byte data;
+        int crc = 0;
+        int data;
 
-        for (byte b : buff)
+        for (Byte aBuff : buff)
         {
-            data = (byte)(((crc >> 8) ^ b) & 0x00FF);
-            crc = (crc << 8) ^ crc16ccittTab[data];
+            data = 0xFF & ((((crc & 0xFFFF) >> 8) ^ (aBuff & 0xFF)) & 0x00FF);
+            crc = 0xFFFF & (((crc & 0xFFFF) << 8) ^ crc16ccittTab[data & 0xFF]);
         }
-
 
         return crc;
-    }
-
-    int calculate_crc(ArrayList<Byte> bytes) {
-        int i;
-        int crc_value = 0;
-        for (Byte aByte : bytes)
-        {
-            for (i = 0x80; i != 0; i >>= 1)
-            {
-                if ((crc_value & 0x8000) != 0)
-                {
-                    crc_value = (crc_value << 1) ^ 0x8005;
-                }
-                else
-                {
-                    crc_value = crc_value << 1;
-                }
-                if ((aByte & i) != 0)
-                {
-                    crc_value ^= 0x8005;
-                }
-            }
-        }
-        return crc_value;
     }
 }
