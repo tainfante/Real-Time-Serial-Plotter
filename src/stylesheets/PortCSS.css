@@ -1,6 +1,13 @@
 .buttons{
     -fx-border-radius: 5;
-    -fx-background-color: #DFB951;
-    -fx-border-color: #222222;
-    -fx-text-fill: #333333;
+    -fx-background-color: #CCCCFF;
+    -fx-border-color: #000066;
+    -fx-text-fill: #000066;
+}
+.background{
+    -fx-background-color: #000066;
+}
+.labels{
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
 }

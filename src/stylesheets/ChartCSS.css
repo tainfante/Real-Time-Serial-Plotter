@@ -2,23 +2,25 @@
 
 }
 .background {
-    -fx-background-color: #444444;
+    -fx-background-color: #CCCCFF;
 }
 .checkedBox{
-    -fx-text-fill: yellow;
+    -fx-text-fill: #000066;
     -fx-font-size: 15px;
 }
 .uncheckedBox{
 
 }
 .title{
+    -fx-text-fill: #000066;
+    -fx-font-size: 20px;
 
 }
 .axis{
 
 }
 #lchart{
-    -fx-background-color: #444444;
+    -fx-background-color: #CCCCFF;
 
 
 }

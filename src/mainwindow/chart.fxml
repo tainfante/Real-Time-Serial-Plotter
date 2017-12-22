@@ -20,8 +20,6 @@
     <center>
             <LineChart fx:id="lchart" layoutY="37.0" prefHeight="226.0" prefWidth="455.0">
 
-                <Legend styleClass="legend" alignment="BOTTOM_CENTER"/>
-
                 <xAxis>
                     <CategoryAxis fx:id="xAxis" side="BOTTOM" />
                 </xAxis>
@@ -32,14 +30,14 @@
     </center>
     <right>
         <VBox spacing="10.0" BorderPane.alignment="CENTER" styleClass="background">
-            <CheckBox layoutX="474.0" layoutY="87.0" mnemonicParsing="false" text="Channel 1" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="104.0" mnemonicParsing="false" text="Channel 2" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="121.0" mnemonicParsing="false" text="Channel 3" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="142.0" mnemonicParsing="false" text="Channel 4" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="161.0" mnemonicParsing="false" text="Channel 5" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="178.0" mnemonicParsing="false" text="Channel 6" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="53.0" mnemonicParsing="false" text="Channel 7" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="70.0" mnemonicParsing="false" text="Channel 8" styleClass="checkedBox"/>
+            <CheckBox layoutX="474.0" layoutY="87.0" mnemonicParsing="false" fx:id="checkOne" text="Channel 1" styleClass="checkedBox"/>
+            <CheckBox layoutX="474.0" layoutY="104.0" mnemonicParsing="false" fx:id="checkTwo" text="Channel 2" styleClass="checkedBox"/>
+            <CheckBox layoutX="474.0" layoutY="121.0" mnemonicParsing="false" fx:id="checkThree" text="Channel 3" styleClass="checkedBox"/>
+            <CheckBox layoutX="474.0" layoutY="142.0" mnemonicParsing="false" fx:id="checkFour" text="Channel 4" styleClass="checkedBox"/>
+            <CheckBox layoutX="474.0" layoutY="161.0" mnemonicParsing="false" fx:id="checkFive" text="Channel 5" styleClass="checkedBox"/>
+            <CheckBox layoutX="474.0" layoutY="178.0" mnemonicParsing="false" fx:id="checkSix" text="Channel 6" styleClass="checkedBox"/>
+            <CheckBox layoutX="474.0" layoutY="53.0" mnemonicParsing="false" fx:id="checkSeven" text="Channel 7" styleClass="checkedBox"/>
+            <CheckBox layoutX="474.0" layoutY="70.0" mnemonicParsing="false" fx:id="checkEight" text="Channel 8" styleClass="checkedBox"/>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
