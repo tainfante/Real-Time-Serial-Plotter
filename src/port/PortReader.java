@@ -9,9 +9,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class PortReader extends Port
 {
     //constants
-    private static final byte START_BYTE = (byte) 0xB4;
-    private static final byte STOP_BYTE = (byte) 0xD2;
-    private static final byte CHG_BYTE = (byte) 0xA5;
+    private static final short START_BYTE = 0xB4;
+    private static final short STOP_BYTE = 0xD2;
+    private static final short CHG_BYTE = 0xA5;
 
     /* maximum is 8 channels where every channel has 1 int value which value it is contained in 4 bytes,
     so all maximum number of bytes will be 4*8 + one byte of size + all possible bytes CHG  */
@@ -46,7 +46,7 @@ public class PortReader extends Port
     private Frame readFrame()
     {
         short cntBytes = 0;
-        byte[] element = new byte[1];
+        int data;
 
         boolean listening = true;
         boolean wasStarted = false;
@@ -60,12 +60,14 @@ public class PortReader extends Port
 
         while (listening)
         {
-            if ( 0 > readByte(element) )                                    // read one byte
+            data = readByte();
+
+            if ( 0 > data )                                             // read one byte
             {
                 break;
             }
 
-            if ((STOP_BYTE & 0xFF) == (element[0] & 0xFF))                  // if element == STOP byte then decode received frame
+            if (STOP_BYTE == data)                                      // if element == STOP byte then decode received frame
             {
                 if (!bufferIn.isEmpty())
                 {
@@ -73,18 +75,18 @@ public class PortReader extends Port
 
                     int receivedChecksum = ((bufferIn.get(bufferIn.size()-2) & 0xFF) << 8) | bufferIn.get(bufferIn.size()-1) & 0xFF;
 
-                    bufferIn.remove(bufferIn.size()-1);         // remove from buffer received checksum
+                    bufferIn.remove(bufferIn.size()-1);           // remove received checksum from buffer
                     bufferIn.remove(bufferIn.size()-1);
 
                     if ( new CRC16().generateCRC16CCITT(bufferIn) == receivedChecksum)
                     {
-                        System.out.println("Checksum is right.");
+                        System.out.println("The checksums agrees.");
 
                         try
                         {
                             frame = mapToFrame(bufferIn);
 
-                            System.out.println("Buffer mapped to object of Frame type.");
+                            System.out.println("Buffer is mapped to object of Frame type.");
 
                             listening = false;
                         }
@@ -107,7 +109,7 @@ public class PortReader extends Port
                     wasStarted = false;
                 }
             }
-            else if ((START_BYTE & 0xFF) == (element[0] & 0xFF))       //if element == START byte then start listening again
+            else if (START_BYTE == data)       //if element == START byte then start listening again
             {
                 wasStarted = true;
                 bufferIn.clear();
@@ -116,7 +118,7 @@ public class PortReader extends Port
             {
                 if (cntBytes < MAX_FRAME_SIZE)
                 {
-                    bufferIn.add(element[0]);
+                    bufferIn.add((byte)data);
                     cntBytes++;
                 }
                 else
@@ -137,7 +139,7 @@ public class PortReader extends Port
 
         for (int i = 0; i < bufferIn.size(); i++)
         {
-            if ((CHG_BYTE & 0xFF) == (bufferIn.get(i) & 0xFF))
+            if (CHG_BYTE == (bufferIn.get(i) & 0xFF))
             {
                 data.add((byte)(~bufferIn.get(i + 1) & 0xFF));
                 i++;
@@ -190,7 +192,7 @@ public class PortReader extends Port
                     }
                     else
                     {
-                        System.out.println("Read frame was a null.");
+                        System.out.println("Read frame is a null.");
                     }
                 }
                 catch (InterruptedException e)

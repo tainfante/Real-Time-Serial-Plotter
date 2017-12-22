@@ -2,13 +2,15 @@ package mainwindow;
 
 import plot.Plot;
 import port.PortReader;
-import com.fazecast.jSerialComm.SerialPort;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import purejavacomm.CommPortIdentifier;
+import purejavacomm.SerialPort;
 
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.ResourceBundle;
 
 public class PortController implements Initializable
@@ -24,10 +26,7 @@ public class PortController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        for (SerialPort port : SerialPort.getCommPorts())
-        {
-            selectPortComboBox.getItems().add(port.getDescriptivePortName());
-        }
+        getAndSetAvailablePortsInComboBox();
 
         if(!selectPortComboBox.getItems().isEmpty())
         {
@@ -76,11 +75,7 @@ public class PortController implements Initializable
     public void onMouseClickedSelectPort()
     {
         selectPortComboBox.getItems().clear();
-
-        for (SerialPort port : SerialPort.getCommPorts())
-        {
-            selectPortComboBox.getItems().add(port.getDescriptivePortName());
-        }
+        getAndSetAvailablePortsInComboBox();
     }
 
     public void onActionSelectBaudrate()
@@ -109,9 +104,8 @@ public class PortController implements Initializable
             if ( null != selectPortComboBox.getSelectionModel().getSelectedItem() )
             {
                 String systemPortName = selectPortComboBox.getSelectionModel().getSelectedItem();
-                systemPortName = systemPortName.substring(systemPortName.indexOf("(")+1, systemPortName.indexOf(")"));
 
-                if (PortReader.getInstance().open(systemPortName, 8, SerialPort.ONE_STOP_BIT, SerialPort.NO_PARITY))
+                if (PortReader.getInstance().open(systemPortName, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE))
                 {
                     connectButton.setText("Disconnect");
                     selectPortComboBox.setDisable(true);
@@ -134,6 +128,15 @@ public class PortController implements Initializable
                 Log.getInstance().log("Port is closed.");
             }
         }
+    }
 
+    private void getAndSetAvailablePortsInComboBox()
+    {
+        Enumeration<CommPortIdentifier> ports = CommPortIdentifier.getPortIdentifiers();
+
+        while(ports.hasMoreElements())
+        {
+            selectPortComboBox.getItems().add(ports.nextElement().getName());
+        }
     }
 }
