@@ -4,11 +4,16 @@ import com.fazecast.jSerialComm.SerialPort;
 
 public class Port
 {
-    private SerialPort serialPort = null;
+    private volatile SerialPort serialPort = null;
 
     private int baudRate = 115200;
 
     volatile boolean stopReading = false;
+
+    public void setStopReading(boolean stopReading)
+    {
+        this.stopReading = stopReading;
+    }
 
     Port()
     {
@@ -39,17 +44,23 @@ public class Port
         }
     }
 
-    byte readByte()
+    int readByte(byte[] oneChar)
     {
-        byte[] oneChar = new byte[1];
-
         if(null != serialPort)
         {
             if ( serialPort.isOpen() )
-                serialPort.readBytes(oneChar, 1);
+            {
+                return serialPort.readBytes(oneChar, 1);
+            }
+            else
+            {
+                return -1;
+            }
         }
-
-        return oneChar[0];
+        else
+        {
+            return -1;
+        }
     }
 
     public boolean open(String serialPortName, int dataBits, int stopBits, int parityBits)
@@ -59,7 +70,7 @@ public class Port
             serialPort = SerialPort.getCommPort(serialPortName);
             serialPort.setComPortParameters(baudRate, dataBits, stopBits, parityBits);
 
-            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_SEMI_BLOCKING, 100, 100);
+            serialPort.setComPortTimeouts(SerialPort.TIMEOUT_READ_BLOCKING, 0, 0);
 
             stopReading = false;
 
@@ -67,7 +78,11 @@ public class Port
             {
                 return (serialPort.openPort());
             }
-            catch (Exception e){ return false; }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+                return false;
+            }
         }
 
         return false;
@@ -76,6 +91,7 @@ public class Port
     public boolean close()
     {
         boolean isClosed = false;
+
 
         if(null != serialPort)
         {

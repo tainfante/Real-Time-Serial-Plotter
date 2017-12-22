@@ -1,5 +1,6 @@
 package mainwindow;
 
+import plot.Plot;
 import port.PortReader;
 import com.fazecast.jSerialComm.SerialPort;
 import javafx.fxml.FXML;
@@ -118,6 +119,7 @@ public class PortController implements Initializable
                     Log.getInstance().log("Port is opened.");
 
                     PortReader.getInstance().startReading();
+                    Plot.getInstance().startPlotting();
                 }
             }
         }
@@ -127,6 +129,7 @@ public class PortController implements Initializable
             {
                 connectButton.setText("Connect");
                 selectPortComboBox.setDisable(false);
+                Plot.getInstance().stopPlotting();
 
                 Log.getInstance().log("Port is closed.");
             }

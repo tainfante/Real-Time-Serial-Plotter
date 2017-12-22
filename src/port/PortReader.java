@@ -1,8 +1,10 @@
 package port;
 
+import classes.Frame;
 import mainwindow.Log;
 
 import java.util.ArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class PortReader extends Port
 {
@@ -11,15 +13,19 @@ public class PortReader extends Port
     private static final byte STOP_BYTE = (byte) 0xD2;
     private static final byte CHG_BYTE = (byte) 0xA5;
 
-    private static final byte MAX_FRAME_SIZE = 100;
+    /* maximum is 8 channels where every channel has 1 int value which value it is contained in 4 bytes,
+    so all maximum number of bytes will be 4*8 + one byte of size + all possible bytes CHG  */
+    private static final byte MAX_FRAME_SIZE = 68;
 
     private static volatile PortReader PortReaderINSTANCE;
 
     private ArrayList<Byte> bufferIn;
+    private LinkedBlockingQueue<Frame> frameBuffer;
 
     private PortReader()
     {
-
+        bufferIn = new ArrayList<>();
+        frameBuffer = new LinkedBlockingQueue<>();
     }
 
     public static PortReader getInstance()
@@ -37,76 +43,95 @@ public class PortReader extends Port
         return PortReaderINSTANCE;
     }
 
-    private int readFrame()
+    private Frame readFrame()
     {
-        byte element = 0;                                           // variable for read one byte
         short cntBytes = 0;
-        int readedBytes = 0;
+        byte[] element = new byte[1];
 
         boolean listening = true;
+        boolean wasStarted = false;
 
-        while ((START_BYTE & 0xFF) != (element & 0xFF))             // & 0xFF <- to obtain a unsigned value
+        Frame frame = null;
+
+        if(!bufferIn.isEmpty())
         {
-            element = readByte();
+            bufferIn.clear();
         }
-
-        bufferIn.clear();
 
         while (listening)
         {
-            element = readByte();                                   // read one byte
-
-            if ((STOP_BYTE & 0xFF) == (element & 0xFF))             // if element == STOP byte then decode received frame
+            if ( 0 > readByte(element) )                                    // read one byte
             {
-                if (0 != bufferIn.size())
-                {
-                    // ========================== for debug =====================================
-                    StringBuilder receivedData = new StringBuilder("Received data: ");
-
-                    for (Byte el : bufferIn)
-                    {
-                        Short t = (short)(el & 0xFF);
-
-                        receivedData.append(t.toString()).append(" ");
-                    }
-
-                    Log.getInstance().log(receivedData.toString());
-                    // ============================================================================
-
-
-                    readedBytes = decodePayload();
-
-
-                    // place for interface to handle of data
-                }
-
-                listening = false;
+                break;
             }
-            else if ((START_BYTE & 0xFF) == (element & 0xFF))       //if element == START byte then start listening again
+
+            if ((STOP_BYTE & 0xFF) == (element[0] & 0xFF))                  // if element == STOP byte then decode received frame
             {
+                if (!bufferIn.isEmpty())
+                {
+                    bufferIn = decodePayload(bufferIn);
+
+                    int receivedChecksum = ((bufferIn.get(bufferIn.size()-2) & 0xFF) << 8) | bufferIn.get(bufferIn.size()-1) & 0xFF;
+
+                    bufferIn.remove(bufferIn.size()-1);         // remove from buffer received checksum
+                    bufferIn.remove(bufferIn.size()-1);
+
+                    if ( new CRC16().generateCRC16CCITT(bufferIn) == receivedChecksum)
+                    {
+                        System.out.println("Checksum is right.");
+
+                        try
+                        {
+                            frame = mapToFrame(bufferIn);
+
+                            System.out.println("Buffer mapped to object of Frame type.");
+
+                            listening = false;
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                            wasStarted = false;
+                            bufferIn.clear();
+                            cntBytes = 0;
+                        }
+                    }
+                    else
+                    {
+                        Log.getInstance().log("Received frame is wrong.");
+                        listening = false;
+                    }
+                }
+                else
+                {
+                    wasStarted = false;
+                }
+            }
+            else if ((START_BYTE & 0xFF) == (element[0] & 0xFF))       //if element == START byte then start listening again
+            {
+                wasStarted = true;
                 bufferIn.clear();
             }
-            else                                                    //else save element in buffer
+            else if(wasStarted)                                        //else save element in buffer
             {
                 if (cntBytes < MAX_FRAME_SIZE)
                 {
-                    bufferIn.add(element);
+                    bufferIn.add(element[0]);
                     cntBytes++;
                 }
                 else
                 {
                     bufferIn.clear();
                     cntBytes = 0;
-
-                    listening = false;
+                    wasStarted = false;
                 }
             }
         }
 
-        return readedBytes;
+        return frame;
     }
 
-    private int decodePayload()
+    private ArrayList<Byte> decodePayload(ArrayList<Byte> bufferIn)
     {
         ArrayList<Byte> data = new ArrayList<>();
 
@@ -123,37 +148,66 @@ public class PortReader extends Port
             }
         }
 
-        bufferIn.clear();
-        bufferIn.addAll(data);
+        return data;
+    }
 
-        // ========================== for debug ================================
-        StringBuilder decodedData = new StringBuilder("Decoded data: ");
+    private Frame mapToFrame(ArrayList<Byte> bytes) throws Exception
+    {
+        ArrayList<Integer> mappedValues = new ArrayList<>();
 
-        for (Byte el : bufferIn)
+        byte numberOfChannels = bytes.get(0);
+
+        if ( (bytes.size() - 1) < numberOfChannels * 4 )
         {
-            Short t = (short)(el & 0xFF);
-
-            decodedData.append(t.toString()).append(" ");
+            throw new Exception("Number of channels in frame was wrong.");
         }
 
-        Log.getInstance().log(decodedData.toString());
-        // ======================================================================
+        for (int i = 0, k = 0; i < numberOfChannels; i++)
+        {
+            mappedValues.add( ((bytes.get(++k) & 0xFF) << 24) | ((bytes.get(++k) & 0xFF) << 16) | ((bytes.get(++k) & 0xFF) << 8) | (bytes.get(++k) & 0xFF) );
+        }
 
-        return bufferIn.size();
+        return new Frame(mappedValues);
     }
 
     public void startReading()
     {
-        // create a new thread and listen for frame, then display it in Log tab
-        new Thread(() ->
+        // create a new thread and listen for frame, then add to frame buffer
+        Thread readingThread = new Thread(() ->
         {
-            bufferIn = new ArrayList<>();
+            System.out.println("Started reading thread.");
 
-            while(!stopReading)
+            while (!stopReading)
             {
-                Log.getInstance().log("Overall received and decoded number of bytes: " + readFrame());
+                try
+                {
+                    Frame frame = readFrame();
+
+                    if ( null != frame )
+                    {
+                        frameBuffer.put(frame);
+                        System.out.println("New frame is added.");
+                    }
+                    else
+                    {
+                        System.out.println("Read frame was a null.");
+                    }
+                }
+                catch (InterruptedException e)
+                {
+                    e.printStackTrace();
+                }
             }
 
-        }).start();
+            System.out.println("Stopped reading thread.");
+        });
+        readingThread.setName("FrameReadingThread");
+        readingThread.start();
     }
+
+    public LinkedBlockingQueue<Frame> getFrameBuffer()
+    {
+        return frameBuffer;
+    }
+
 }
