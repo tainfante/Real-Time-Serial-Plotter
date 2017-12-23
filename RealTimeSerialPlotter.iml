@@ -9,5 +9,6 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="com.github.purejavacomm:purejavacomm:1.0.2.RELEASE" level="project" />
+    <orderEntry type="library" name="net.java.openjfx.backport:openjfx-78-backport:1.8.0-ea-b96.1" level="project" />
   </component>
 </module>

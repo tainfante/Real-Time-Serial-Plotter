@@ -1,54 +1,53 @@
 package classes;
 
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Frame {
 
-    private int number_of_channels;
-    ArrayList<Integer> channel_data=new ArrayList<>();
-    private String formattedTime;
-    private DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_TIME ;
+    private int numberOfChannels;
+    ArrayList<Integer> channelData=new ArrayList<>();
+    private Date date;
 
     //Constructors
 
-
     public Frame() {
+
     }
 
-    public Frame(ArrayList<Integer> channel_data) {
-        this.channel_data = channel_data;
-        LocalTime time=LocalTime.now();
-        formattedTime = formatter.format(time);
+    public Frame(ArrayList<Integer> channelData) {
+        this.channelData = channelData;
+        date=new GregorianCalendar().getTime();
+        int numberOfChannels=channelData.size();
+        setNumberOfChannels(numberOfChannels);
     }
-
-
+    
     //Setters
 
-    public void setNumber_of_channels(int number_of_channels) {
-        this.number_of_channels = number_of_channels;
+    public void setNumberOfChannels(int numberOfChannels) {
+        this.numberOfChannels = numberOfChannels;
     }
 
-    public void setChannel_data(ArrayList<Integer> channel_data) {
-        this.channel_data = channel_data;
+    public void setChannelData(ArrayList<Integer> channelData) {
+        this.channelData = channelData;
     }
 
-    public void setTime(String time) {
-        this.formattedTime = time;
+    public void setTime(Date date) {
+        this.date = date;
     }
 
     //Getters
 
-    public int getNumber_of_channels() {
-        return number_of_channels;
+    public int getNumberOfChannels() {
+        return numberOfChannels;
     }
 
-    public ArrayList<Integer> getChannel_data() {
-        return channel_data;
+    public ArrayList<Integer> getChannelData() {
+        return channelData;
     }
 
-    public String getTime() {
-        return formattedTime;
+    public Date getTime() {
+        return date;
     }
 }
