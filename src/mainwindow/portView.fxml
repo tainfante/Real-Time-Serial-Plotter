@@ -7,7 +7,7 @@
 
 <?import java.net.URL?>
 <HBox alignment="BASELINE_LEFT" prefHeight="25.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8"
-      xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.PortController">
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.PortController" styleClass="background">
     <stylesheets>
         <URL value="@../stylesheets/PortCSS.css"/>
     </stylesheets>
@@ -15,9 +15,9 @@
         <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
     </padding>
    <children>
-       <Label prefHeight="25.0" prefWidth="65.0" text="Port COM:" />
+       <Label prefHeight="25.0" prefWidth="65.0" text="Port COM:" styleClass="labels"/>
       <ComboBox fx:id="selectPortComboBox" onAction="#onActionPortComboBox" onMouseClicked="#onMouseClickedSelectPort" prefWidth="200.0" />
-       <Label onMouseClicked="#onMouseClickedSelectPort" prefHeight="29.0" prefWidth="55.0" text="Baudrate:">
+       <Label onMouseClicked="#onMouseClickedSelectPort" prefHeight="29.0" prefWidth="55.0" text="Baudrate:" styleClass="labels">
            <HBox.margin>
            <Insets left="15.0" />
            </HBox.margin>
@@ -25,7 +25,7 @@
       <ComboBox fx:id="selectBaudrateComboBox" editable="true" onAction="#onActionSelectBaudrate" onDragEntered="#onActionSelectBaudrate" prefWidth="150.0" />
 
        <Region maxWidth="Infinity" HBox.hgrow="ALWAYS" />
-       <Button fx:id="connectButton" mnemonicParsing="false" onAction="#onActionConnectButton" text="Connect">
+       <Button fx:id="connectButton" mnemonicParsing="false" onAction="#onActionConnectButton" text="Connect" styleClass="buttons">
            <HBox.margin>
            <Insets left="10.0" />
            </HBox.margin>
