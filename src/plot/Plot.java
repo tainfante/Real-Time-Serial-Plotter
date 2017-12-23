@@ -7,15 +7,11 @@ import port.Port;
 import port.PortReader;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
-import static mainwindow.Chart.series_1;
-import static mainwindow.Chart.series_2;
-import static mainwindow.Chart.series_3;
-import static mainwindow.Chart.series_4;
-import static mainwindow.Chart.series_5;
-import static mainwindow.Chart.series_6;
-import static mainwindow.Chart.series_7;
-import static mainwindow.Chart.series_8;
+import static mainwindow.Chart.*;
 
 
 public class Plot {
@@ -29,14 +25,10 @@ public class Plot {
 
     }
 
-    public static Plot getInstance()
-    {
-        if (null == PlotINSTANCE)
-        {
-            synchronized (Plot.class)
-            {
-                if (null == PlotINSTANCE)
-                {
+    public static Plot getInstance() {
+        if (null == PlotINSTANCE) {
+            synchronized (Plot.class) {
+                if (null == PlotINSTANCE) {
                     PlotINSTANCE = new Plot();
                 }
             }
@@ -44,38 +36,42 @@ public class Plot {
         return PlotINSTANCE;
     }
 
-    public void plotData() throws InterruptedException {
+    private void plotData() throws InterruptedException {
         Frame frame=new Frame();
         int data;
         frame=PortReader.getInstance().getFrameBuffer().take();
-        frame.setNumber_of_channels(frame.getChannel_data().size());
-        for(int i=0; i<frame.getNumber_of_channels();i++){
-            data=frame.getChannel_data().get(i);
+        frame.setNumberOfChannels(frame.getChannelData().size());
+//        Calendar calendar=Calendar.getInstance();
+//        calendar.add(Calendar.MINUTE, -10);
+//        System.out.println(calendar);
+//        xAxis.setLowerBound(calendar.getTime());
+        for(int i=0; i<frame.getNumberOfChannels();i++){
+            data=frame.getChannelData().get(i);
 
             switch (i){
                 case 0:
-                    series_1.getData().add(new XYChart.Data(frame.getTime(), data));
+                    series1.getData().add(new XYChart.Data(frame.getTime(), data));
                     break;
                 case 1:
-                    series_2.getData().add(new XYChart.Data(frame.getTime(), data));
+                    series2.getData().add(new XYChart.Data(frame.getTime(), data));
                     break;
                 case 2:
-                    series_3.getData().add(new XYChart.Data(frame.getTime(), data));
+                    series3.getData().add(new XYChart.Data(frame.getTime(), data));
                     break;
                 case 3:
-                    series_4.getData().add(new XYChart.Data(frame.getTime(), data));
+                    series4.getData().add(new XYChart.Data(frame.getTime(), data));
                     break;
                 case 4:
-                    series_5.getData().add(new XYChart.Data(frame.getTime(), data));
+                    series5.getData().add(new XYChart.Data(frame.getTime(), data));
                     break;
                 case 5:
-                    series_6.getData().add(new XYChart.Data(frame.getTime(), data));
+                    series6.getData().add(new XYChart.Data(frame.getTime(), data));
                     break;
                 case 6:
-                    series_7.getData().add(new XYChart.Data(frame.getTime(), data));
+                    series7.getData().add(new XYChart.Data(frame.getTime(), data));
                     break;
                 case 7:
-                    series_8.getData().add(new XYChart.Data(frame.getTime(), data));
+                    series8.getData().add(new XYChart.Data(frame.getTime(), data));
                     break;
 
             }
@@ -85,18 +81,14 @@ public class Plot {
     public void startPlotting(){
         Thread plotThread=new Thread(()->{
 
-            while(!stop)
-            {
-                try
-                {
+            while(!stop) {
+                try {
                     plotData();
                 }
-                catch (Exception e)
-                {
+                catch (Exception e) {
                     break;
                 }
             }
-
         });
         plotThread.start();
 
