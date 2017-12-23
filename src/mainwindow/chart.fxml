@@ -58,7 +58,6 @@
     <bottom>
         <HBox spacing="10.0" styleClass="background">
            <children>
-               <Button onAction="#onGenerateData" />
                <Label text="Show data from last:" />
             <ChoiceBox prefWidth="150.0" fx:id="timeBox" />
            </children>

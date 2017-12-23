@@ -1,17 +1,13 @@
 package mainwindow;
 
 import classes.DateAxis;
-import classes.GenerateData;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-import plot.Plot;
 
 import java.net.URL;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -73,10 +69,4 @@ public class Chart implements Initializable {
 
     }
 
-    public void onGenerateData(ActionEvent actionEvent) {
-        //Do usuniecia
-        GenerateData.getInstance().startGenerating();
-        Plot.getInstance().startPlotting();
-        //Koniec
-    }
 }
