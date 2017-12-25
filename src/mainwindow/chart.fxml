@@ -56,17 +56,6 @@
 
     </right>
     <bottom>
-<<<<<<< HEAD
-        <HBox spacing="10.0" styleClass="background">
-           <children>
-               <Label text="Show data from last:" />
-            <ChoiceBox prefWidth="150.0" fx:id="timeBox" />
-           </children>
-            <BorderPane.margin>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </BorderPane.margin>
-        </HBox>
-=======
         <VBox>
             <HBox>
                 <children>
@@ -119,7 +108,5 @@
                 </BorderPane.margin>
             </HBox>
         </VBox>
-
->>>>>>> d308831
     </bottom>
 </BorderPane>

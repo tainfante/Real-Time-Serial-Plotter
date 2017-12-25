@@ -1,20 +1,14 @@
 package mainwindow;
 
 import classes.DateAxis;
-<<<<<<< HEAD
-=======
 import javafx.event.ActionEvent;
->>>>>>> d308831
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
-<<<<<<< HEAD
-=======
 import javafx.scene.control.TextField;
->>>>>>> d308831
 
 import java.net.URL;
 import java.util.Date;
@@ -83,8 +77,6 @@ public class Chart implements Initializable {
 
     }
 
-<<<<<<< HEAD
-=======
     public void onSubmitChanges(ActionEvent actionEvent) {
         String MIN=minText.getText();
         String MAX=maxText.getText();
@@ -94,6 +86,16 @@ public class Chart implements Initializable {
         {
             min = Double.parseDouble(MIN);
             max = Double.parseDouble(MAX);
+            if(min>max){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Wrong data");
+                alert.setHeaderText("You have submitted wrong data");
+                alert.setContentText("Minimum value must be lower then the maximum");
+                alert.showAndWait();
+            }
+            yAxis.setAutoRanging(false);
+            yAxis.setLowerBound(min);
+            yAxis.setUpperBound(max);
         }
         catch(NumberFormatException nfe)
         {
@@ -103,9 +105,7 @@ public class Chart implements Initializable {
             alert.setContentText("Please, set some numbers");
             alert.showAndWait();
         }
-        yAxis.setAutoRanging(false);
-        yAxis.setLowerBound(min);
-        yAxis.setUpperBound(max);
+
     }
->>>>>>> d308831
+
 }
