@@ -1,11 +1,14 @@
 package mainwindow;
 
 import classes.DateAxis;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
+import javafx.scene.control.Alert;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.TextField;
 
 import java.net.URL;
 import java.util.Date;
@@ -44,6 +47,10 @@ public class Chart implements Initializable {
     public CheckBox checkEight;
     @FXML
     private ChoiceBox timeBox;
+    @FXML
+    private TextField minText;
+    @FXML
+    private TextField maxText;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -66,6 +73,38 @@ public class Chart implements Initializable {
         timeBox.getItems().add("10 minutes");
         timeBox.getItems().add("5 minutes");
         timeBox.getItems().add("1 minute");
+        yAxis.setForceZeroInRange(false);
+
+    }
+
+    public void onSubmitChanges(ActionEvent actionEvent) {
+        String MIN=minText.getText();
+        String MAX=maxText.getText();
+        double min=0;
+        double max=65000;
+        try
+        {
+            min = Double.parseDouble(MIN);
+            max = Double.parseDouble(MAX);
+            if(min>max){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Wrong data");
+                alert.setHeaderText("You have submitted wrong data");
+                alert.setContentText("Minimum value must be lower then the maximum");
+                alert.showAndWait();
+            }
+            yAxis.setAutoRanging(false);
+            yAxis.setLowerBound(min);
+            yAxis.setUpperBound(max);
+        }
+        catch(NumberFormatException nfe)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Wrong data type");
+            alert.setHeaderText("You have submitted wrong data");
+            alert.setContentText("Please, set some numbers");
+            alert.showAndWait();
+        }
 
     }
 
