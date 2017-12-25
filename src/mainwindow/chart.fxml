@@ -56,6 +56,7 @@
 
     </right>
     <bottom>
+<<<<<<< HEAD
         <HBox spacing="10.0" styleClass="background">
            <children>
                <Label text="Show data from last:" />
@@ -65,5 +66,60 @@
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
         </HBox>
+=======
+        <VBox>
+            <HBox>
+                <children>
+                    <Label text="Set Y Axis parameters" prefWidth="310" styleClass="labels"/>
+                    <Label text="Set X Axis parameters" prefWidth="310" styleClass="labels"/>
+                </children>
+            </HBox>
+            <HBox spacing="10.0" styleClass="background">
+                <children>
+                    <HBox prefWidth="310" alignment="CENTER">
+                        <padding>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                        <children>
+                            <Label text="MIN VALUE:">
+                                <padding>
+                                    <Insets right="5.0" />
+                                </padding>
+                            </Label>
+                            <TextField fx:id="minText" prefWidth="40">
+                                <padding>
+                                    <Insets right="5.0" />
+                                </padding>
+                            </TextField>
+                            <Label text="MAX VALUE:">
+                                <padding>
+                                    <Insets right="5.0" />
+                                </padding>
+                            </Label>
+                            <TextField fx:id="maxText" prefWidth="40">
+                                <padding>
+                                    <Insets right="5.0" />
+                                </padding>
+                            </TextField>
+                            <Button onAction="#onSubmitChanges" text="Submit" />
+                        </children>
+                    </HBox>
+                    <HBox prefWidth="310" alignment="CENTER">
+                        <padding>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                        <children>
+                            <Label text="Show data from last:" />
+                            <ChoiceBox prefWidth="150.0" fx:id="timeBox"/>
+                        </children>
+                    </HBox>
+                </children>
+                <BorderPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </BorderPane.margin>
+            </HBox>
+        </VBox>
+
+>>>>>>> d308831
     </bottom>
 </BorderPane>
