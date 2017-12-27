@@ -53,11 +53,6 @@ public class PortReader extends Port
 
         Frame frame = null;
 
-        if(!bufferIn.isEmpty())
-        {
-            bufferIn.clear();
-        }
-
         while (listening)
         {
             data = readByte();
@@ -67,65 +62,70 @@ public class PortReader extends Port
                 break;
             }
 
-            if (STOP_BYTE == data)                                      // if element == STOP byte then decode received frame
+            switch(data)
             {
-                if (!bufferIn.isEmpty())
+                case START_BYTE:                    //if element == START byte then start listening again
                 {
-                    bufferIn = decodePayload(bufferIn);
+                    wasStarted = true;
+                    bufferIn.clear();
 
-                    int receivedChecksum = ((bufferIn.get(bufferIn.size()-2) & 0xFF) << 8) | bufferIn.get(bufferIn.size()-1) & 0xFF;
+                    break;
+                }
 
-                    bufferIn.remove(bufferIn.size()-1);           // remove received checksum from buffer
-                    bufferIn.remove(bufferIn.size()-1);
-
-                    if ( new CRC16().generateCRC16CCITT(bufferIn) == receivedChecksum)
+                case STOP_BYTE:                     // if element == STOP byte then decode received frame
+                {
+                    if (!bufferIn.isEmpty())
                     {
-                        System.out.println("The checksums agrees.");
+                        bufferIn = decodePayload(bufferIn);
 
-                        try
+                        if ( CRC16.checksumIsAgree(bufferIn) )
                         {
-                            frame = mapToFrame(bufferIn);
+                            System.out.println("The checksums agrees.");
 
-                            System.out.println("Buffer is mapped to object of Frame type.");
-
-                            listening = false;
+                            try
+                            {
+                                frame = mapBufferToFrame(bufferIn);
+                                System.out.println("Buffer is mapped to object of Frame type.");
+                                listening = false;
+                            }
+                            catch (Exception e)
+                            {
+                                e.printStackTrace();
+                                wasStarted = false;
+                                bufferIn.clear();
+                                cntBytes = 0;
+                            }
                         }
-                        catch (Exception e)
+                        else
                         {
-                            e.printStackTrace();
-                            wasStarted = false;
-                            bufferIn.clear();
-                            cntBytes = 0;
+                            Log.getInstance().log("The checksums doesn't agrees.");
+                            listening = false;
                         }
                     }
                     else
                     {
-                        Log.getInstance().log("Received frame is wrong.");
-                        listening = false;
+                        wasStarted = false;
                     }
+
+                    break;
                 }
-                else
+
+                default:
                 {
-                    wasStarted = false;
-                }
-            }
-            else if (START_BYTE == data)       //if element == START byte then start listening again
-            {
-                wasStarted = true;
-                bufferIn.clear();
-            }
-            else if(wasStarted)                                        //else save element in buffer
-            {
-                if (cntBytes < MAX_FRAME_SIZE)
-                {
-                    bufferIn.add((byte)data);
-                    cntBytes++;
-                }
-                else
-                {
-                    bufferIn.clear();
-                    cntBytes = 0;
-                    wasStarted = false;
+                    if(wasStarted)                          //else save element in buffer
+                    {
+                        if (cntBytes < MAX_FRAME_SIZE)
+                        {
+                            bufferIn.add((byte)data);
+                            cntBytes++;
+                        }
+                        else
+                        {
+                            bufferIn.clear();
+                            cntBytes = 0;
+                            wasStarted = false;
+                        }
+                    }
                 }
             }
         }
@@ -153,7 +153,7 @@ public class PortReader extends Port
         return data;
     }
 
-    private Frame mapToFrame(ArrayList<Byte> bytes) throws Exception
+    private Frame mapBufferToFrame(ArrayList<Byte> bytes) throws Exception
     {
         ArrayList<Integer> mappedValues = new ArrayList<>();
 
@@ -161,7 +161,7 @@ public class PortReader extends Port
 
         if ( (bytes.size() - 1) < numberOfChannels * 4 )
         {
-            throw new Exception("Number of channels in frame was wrong.");
+            throw new Exception("Number of channels in frame is wrong.");
         }
 
         for (int i = 0, k = 0; i < numberOfChannels; i++)
@@ -188,7 +188,7 @@ public class PortReader extends Port
                     if ( null != frame )
                     {
                         frameBuffer.put(frame);
-                        System.out.println("New frame is added.");
+                        System.out.println("New frame is added to the queue.");
                     }
                     else
                     {
@@ -211,5 +211,4 @@ public class PortReader extends Port
     {
         return frameBuffer;
     }
-
 }

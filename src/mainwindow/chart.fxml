@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
@@ -9,19 +14,19 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
-
 <?import java.net.URL?>
-<?import com.sun.javafx.charts.Legend?>
-<BorderPane minHeight="325.0" minWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.Chart" styleClass="background">
+
+
+<?import classes.DateAxis?>
+<BorderPane minHeight="325.0" minWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.Chart">
     <stylesheets>
-        <URL value="@../stylesheets/ChartCSS.css"/>
+        <URL value="@../stylesheets/ChartCSS.css" />
     </stylesheets>
     <center>
             <LineChart fx:id="lchart" layoutY="37.0" prefHeight="226.0" prefWidth="455.0">
 
                 <xAxis>
-                    <CategoryAxis fx:id="xAxis" side="BOTTOM" />
+                    <DateAxis fx:id="xAxis" />
                 </xAxis>
                 <yAxis>
                     <NumberAxis fx:id="yAxis" side="LEFT" />
@@ -29,15 +34,17 @@
             </LineChart>
     </center>
     <right>
-        <VBox spacing="10.0" BorderPane.alignment="CENTER" styleClass="background">
-            <CheckBox layoutX="474.0" layoutY="87.0" mnemonicParsing="false" fx:id="checkOne" text="Channel 1" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="104.0" mnemonicParsing="false" fx:id="checkTwo" text="Channel 2" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="121.0" mnemonicParsing="false" fx:id="checkThree" text="Channel 3" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="142.0" mnemonicParsing="false" fx:id="checkFour" text="Channel 4" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="161.0" mnemonicParsing="false" fx:id="checkFive" text="Channel 5" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="178.0" mnemonicParsing="false" fx:id="checkSix" text="Channel 6" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="53.0" mnemonicParsing="false" fx:id="checkSeven" text="Channel 7" styleClass="checkedBox"/>
-            <CheckBox layoutX="474.0" layoutY="70.0" mnemonicParsing="false" fx:id="checkEight" text="Channel 8" styleClass="checkedBox"/>
+        <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
+           <children>
+               <CheckBox fx:id="checkOne" layoutX="474.0" layoutY="87.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 1" />
+               <CheckBox fx:id="checkTwo" layoutX="474.0" layoutY="104.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 2" />
+               <CheckBox fx:id="checkThree" layoutX="474.0" layoutY="121.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 3" />
+               <CheckBox fx:id="checkFour" layoutX="474.0" layoutY="142.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 4" />
+               <CheckBox fx:id="checkFive" layoutX="474.0" layoutY="161.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 5" />
+               <CheckBox fx:id="checkSix" layoutX="474.0" layoutY="178.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 6" />
+               <CheckBox fx:id="checkSeven" layoutX="474.0" layoutY="53.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 7" />
+               <CheckBox fx:id="checkEight" layoutX="474.0" layoutY="70.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 8" />
+           </children>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
@@ -49,10 +56,57 @@
 
     </right>
     <bottom>
-        <HBox spacing="10.0" styleClass="background">
-            <BorderPane.margin>
-                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-            </BorderPane.margin>
-        </HBox>
+        <VBox>
+            <HBox>
+                <children>
+                    <Label text="Set Y Axis parameters" prefWidth="310" styleClass="labels"/>
+                    <Label text="Set X Axis parameters" prefWidth="310" styleClass="labels"/>
+                </children>
+            </HBox>
+            <HBox spacing="10.0" styleClass="background">
+                <children>
+                    <HBox prefWidth="310" alignment="CENTER">
+                        <padding>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                        <children>
+                            <Label text="MIN VALUE:">
+                                <padding>
+                                    <Insets right="5.0" />
+                                </padding>
+                            </Label>
+                            <TextField fx:id="minText" prefWidth="40">
+                                <padding>
+                                    <Insets right="5.0" />
+                                </padding>
+                            </TextField>
+                            <Label text="MAX VALUE:">
+                                <padding>
+                                    <Insets right="5.0" />
+                                </padding>
+                            </Label>
+                            <TextField fx:id="maxText" prefWidth="40">
+                                <padding>
+                                    <Insets right="5.0" />
+                                </padding>
+                            </TextField>
+                            <Button onAction="#onSubmitChanges" text="Submit" />
+                        </children>
+                    </HBox>
+                    <HBox prefWidth="310" alignment="CENTER">
+                        <padding>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                        </padding>
+                        <children>
+                            <Label text="Show data from last:" />
+                            <ChoiceBox prefWidth="150.0" fx:id="timeBox"/>
+                        </children>
+                    </HBox>
+                </children>
+                <BorderPane.margin>
+                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                </BorderPane.margin>
+            </HBox>
+        </VBox>
     </bottom>
 </BorderPane>

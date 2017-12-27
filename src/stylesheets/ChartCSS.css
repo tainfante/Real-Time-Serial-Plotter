@@ -24,5 +24,11 @@
 
 
 }
+.labels{
+    -fx-border-color: #000066;
+    -fx-font-size: 20px;
+    -fx-alignment: center;
+    -fx-background-color: #CCCCFF;
+}
 
 
