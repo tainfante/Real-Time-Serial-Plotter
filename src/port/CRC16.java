@@ -46,7 +46,7 @@ public class CRC16
     }
 
     // ============================================================================================================================
-    public int generateCRC16CCITT(ArrayList<Byte> buff)
+    private static int generateCRC16CCITT(ArrayList<Byte> buff)
     {
         int crc = 0;
         int data;
@@ -58,5 +58,22 @@ public class CRC16
         }
 
         return crc;
+    }
+
+    public static boolean checksumIsAgree(ArrayList<Byte> buffer)
+    {
+        int receivedChecksum = getChecksumFromBuffer(buffer);
+
+        return generateCRC16CCITT(buffer) == receivedChecksum;
+    }
+
+    private static int getChecksumFromBuffer(ArrayList<Byte> buffer)
+    {
+        int receivedChecksum = ((buffer.get(buffer.size()-2) & 0xFF) << 8) | buffer.get(buffer.size()-1) & 0xFF;
+
+        buffer.remove(buffer.size()-1);           // remove received checksum from buffer
+        buffer.remove(buffer.size()-1);
+
+        return receivedChecksum;
     }
 }

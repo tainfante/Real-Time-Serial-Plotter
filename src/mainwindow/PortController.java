@@ -26,7 +26,7 @@ public class PortController implements Initializable
     @Override
     public void initialize(URL location, ResourceBundle resources)
     {
-        getAndSetAvailablePortsInComboBox();
+        setAvailablePortsInComboBox();
 
         if(!selectPortComboBox.getItems().isEmpty())
         {
@@ -75,7 +75,7 @@ public class PortController implements Initializable
     public void onMouseClickedSelectPort()
     {
         selectPortComboBox.getItems().clear();
-        getAndSetAvailablePortsInComboBox();
+        setAvailablePortsInComboBox();
     }
 
     public void onActionSelectBaudrate()
@@ -130,7 +130,7 @@ public class PortController implements Initializable
         }
     }
 
-    private void getAndSetAvailablePortsInComboBox()
+    private void setAvailablePortsInComboBox()
     {
         Enumeration<CommPortIdentifier> ports = CommPortIdentifier.getPortIdentifiers();
 
