@@ -1,7 +1,9 @@
 package plot;
 
+import classes.DateAxis;
 import classes.Frame;
 import javafx.scene.chart.XYChart;
+import mainwindow.Chart;
 import mainwindow.Log;
 import port.Port;
 import port.PortReader;
@@ -37,14 +39,10 @@ public class Plot {
     }
 
     private void plotData() throws InterruptedException {
-        Frame frame=new Frame();
+        Frame frame;
         int data;
         frame=PortReader.getInstance().getFrameBuffer().take();
         frame.setNumberOfChannels(frame.getChannelData().size());
-//        Calendar calendar=Calendar.getInstance();
-//        calendar.add(Calendar.MINUTE, -10);
-//        System.out.println(calendar);
-//        xAxis.setLowerBound(calendar.getTime());
         for(int i=0; i<frame.getNumberOfChannels();i++){
             data=frame.getChannelData().get(i);
 
@@ -76,7 +74,6 @@ public class Plot {
 
             }
         }
-
     }
     public void startPlotting(){
         Thread plotThread=new Thread(()->{
@@ -84,6 +81,7 @@ public class Plot {
             while(!stop) {
                 try {
                     plotData();
+                    Chart.getInstance().updateXAxis();
                 }
                 catch (Exception e) {
                     break;
