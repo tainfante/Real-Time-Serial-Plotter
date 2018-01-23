@@ -7,7 +7,7 @@ import java.util.GregorianCalendar;
 public class Frame {
 
     private int numberOfChannels;
-    ArrayList<Integer> channelData=new ArrayList<>();
+    private ArrayList<Integer> channelData = new ArrayList<>();
     private Date date;
 
     //Constructors
@@ -49,5 +49,26 @@ public class Frame {
 
     public Date getTime() {
         return date;
+    }
+
+    public String toString(boolean checks[])
+    {
+        StringBuilder s = new StringBuilder();
+
+        for(short i = 0; i < numberOfChannels;i++)
+        {
+            if (checks[i])
+            {
+                s.append(channelData.get(i).toString()).append(" ");
+            }
+            else
+            {
+                s.append("  ");
+            }
+        }
+
+        s.deleteCharAt(s.length() - 1);
+
+        return s.toString();
     }
 }
