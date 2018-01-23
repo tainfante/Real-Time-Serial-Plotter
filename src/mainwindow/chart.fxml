@@ -112,7 +112,7 @@
                                 </padding>
                                 <children>
                                     <Label text="Show number of samples:" />
-                                    <ComboBox prefWidth="150.0" fx:id="timeBox" onAction="#onChooseSamples"/>
+                                    <TextField fx:id="samplesText" onAction="#onEnter"/>
                                 </children>
                             </HBox>
                         </children>
