@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane prefHeight="288.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.CaptureController">
+   <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="498.0" minWidth="10.0" prefWidth="473.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="498.0" minWidth="10.0" prefWidth="25.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="337.0" minWidth="10.0" prefWidth="109.0" />
+   </columnConstraints>
+   <rowConstraints>
+      <RowConstraints maxHeight="182.0" minHeight="0.0" prefHeight="22.0" />
+      <RowConstraints maxHeight="245.0" minHeight="0.0" prefHeight="245.0" />
+      <RowConstraints maxHeight="201.0" minHeight="10.0" prefHeight="21.0" vgrow="SOMETIMES" />
+   </rowConstraints>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+   <children>
+      <VBox prefHeight="168.0" prefWidth="412.0" spacing="10.0" GridPane.rowIndex="1">
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+         <children>
+            <HBox prefHeight="0.0" prefWidth="410.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="23.0" prefWidth="21.0" text="File:">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="filePathTextField" focusTraversable="false" minHeight="20.0" prefHeight="10.0" prefWidth="268.0" text="C:\captureOfData.txt">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="chooseFileButton" focusTraversable="false" minHeight="20.0" mnemonicParsing="false" onAction="#chooseFileClick" prefHeight="22.0" prefWidth="24.0" text="..." />
+               </children>
+            </HBox>
+            <HBox prefHeight="24.0" prefWidth="464.0">
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <children>
+                  <Button fx:id="startOverwriteButton" focusTraversable="false" minHeight="20.0" mnemonicParsing="false" onAction="#startOverwriteClick" prefHeight="24.0" prefWidth="105.0" text="Start: Overwrite">
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="startAppendButton" disable="true" focusTraversable="false" minHeight="20.0" mnemonicParsing="false" onAction="#startAppendClick" prefHeight="24.0" prefWidth="89.0" text="Start: Append">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                     <font>
+                        <Font size="11.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="stopButton" disable="true" mnemonicParsing="false" onAction="#stopClick" text="Stop">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+            <RadioButton fx:id="asHexRadioButton" focusTraversable="false" mnemonicParsing="false" text="as hex">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </RadioButton>
+            <RadioButton fx:id="asDecimalRadioButton" focusTraversable="false" mnemonicParsing="false" text="as decimal">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </RadioButton>
+         </children>
+      </VBox>
+      <VBox maxWidth="306.0" prefHeight="275.0" prefWidth="306.0" spacing="5.0" GridPane.columnIndex="2" GridPane.rowIndex="1">
+         <children>
+            <Label alignment="CENTER" prefHeight="15.0" prefWidth="92.0" text="Choose channels:" textAlignment="CENTER" />
+            <Separator prefWidth="200.0" />
+            <CheckBox fx:id="channel1CheckBox" focusTraversable="false" mnemonicParsing="false" text="Channel 1" />
+            <CheckBox fx:id="channel2CheckBox" focusTraversable="false" mnemonicParsing="false" text="Channel 2" />
+            <CheckBox fx:id="channel3CheckBox" focusTraversable="false" layoutX="10.0" layoutY="68.0" mnemonicParsing="false" text="Channel 3" />
+            <CheckBox fx:id="channel4CheckBox" focusTraversable="false" layoutX="10.0" layoutY="85.0" mnemonicParsing="false" text="Channel 4" />
+            <CheckBox fx:id="channel5CheckBox" focusTraversable="false" layoutX="10.0" layoutY="51.0" mnemonicParsing="false" text="Channel 5" />
+            <CheckBox fx:id="channel6CheckBox" focusTraversable="false" layoutX="10.0" layoutY="119.0" mnemonicParsing="false" text="Channel 6" />
+            <CheckBox fx:id="channel7CheckBox" focusTraversable="false" layoutX="10.0" layoutY="68.0" mnemonicParsing="false" text="Channel 7" />
+            <CheckBox fx:id="channel8CheckBox" focusTraversable="false" layoutX="10.0" layoutY="153.0" mnemonicParsing="false" text="Channel 8" />
+         </children>
+      </VBox>
+      <Label prefHeight="41.0" prefWidth="174.0" text="Capture" textAlignment="CENTER">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Label>
+      <Separator orientation="VERTICAL" prefHeight="245.0" prefWidth="139.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+   </children>
+</GridPane>

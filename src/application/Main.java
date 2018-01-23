@@ -9,6 +9,7 @@ import port.PortReader;
 
 public class Main extends Application
 {
+    private static Stage pStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception
@@ -28,5 +29,9 @@ public class Main extends Application
     public static void main(String[] args)
     {
         launch(args);
+    }
+
+    public static Stage getPrimaryStage() {
+        return pStage;
     }
 }

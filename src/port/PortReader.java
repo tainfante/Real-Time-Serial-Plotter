@@ -21,11 +21,17 @@ public class PortReader extends Port
 
     private ArrayList<Byte> bufferIn;
     private LinkedBlockingQueue<Frame> frameBuffer;
+    private LinkedBlockingQueue<Frame> exportFrameBuffer;
+
+    private boolean isExportBufferEnabled = false;
+
+    public void setExportBufferEnabled(boolean isExportBufferEnabled){ this.isExportBufferEnabled = isExportBufferEnabled; }
 
     private PortReader()
     {
         bufferIn = new ArrayList<>();
         frameBuffer = new LinkedBlockingQueue<>();
+        exportFrameBuffer = new LinkedBlockingQueue<>();
     }
 
     public static PortReader getInstance()
@@ -188,6 +194,12 @@ public class PortReader extends Port
                     if ( null != frame )
                     {
                         frameBuffer.put(frame);
+
+                        if (isExportBufferEnabled)
+                        {
+                            exportFrameBuffer.put(frame);
+                        }
+
                         System.out.println("New frame is added to the queue.");
                     }
                     else
@@ -210,5 +222,10 @@ public class PortReader extends Port
     public LinkedBlockingQueue<Frame> getFrameBuffer()
     {
         return frameBuffer;
+    }
+
+    public LinkedBlockingQueue<Frame> getExportFrameBuffer()
+    {
+        return exportFrameBuffer;
     }
 }

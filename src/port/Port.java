@@ -11,9 +11,10 @@ public class Port
 {
     private volatile SerialPort port = null;
 
-    private int baudRate = 115200;
+    private int baudRate = 1000000;
 
     volatile boolean stopReading = false;
+    volatile boolean isOpen = false;
 
     public void setStopReading(boolean stopReading)
     {
@@ -93,6 +94,8 @@ public class Port
 
             stopReading = false;
 
+            isOpen = true;
+
             return true;
         }
         catch (Throwable thwble)
@@ -116,9 +119,15 @@ public class Port
 
             port = null;
 
+            isOpen = false;
             isClosed = true;
         }
 
         return isClosed;
+    }
+
+    public boolean isOpen()
+    {
+        return  isOpen;
     }
 }
