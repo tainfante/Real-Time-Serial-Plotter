@@ -24,9 +24,13 @@ public class Plot {
 
     private static volatile Plot PlotINSTANCE;
 
-    public boolean stopPlotting() {
-        return stop = true;
+    public void stopPlotting() {
+        stop = true;
 
+    }
+
+    public void setStopPlotting(boolean stop){
+        this.stop=stop;
     }
 
 
@@ -49,7 +53,7 @@ public class Plot {
 
     public void startPlotting() {
 
-        new Thread(new Runnable() {
+        Thread plottingThread=new Thread(new Runnable() {
             Frame receivedFrame;
 
             @Override
@@ -116,8 +120,14 @@ public class Plot {
                         });
                     }
                 }
+                System.out.println("Stopped plotting thread");
             }
-        }).start();
+        });
+        plottingThread.setDaemon(true);
+        plottingThread.setName("Plotting thread");
+        plottingThread.start();
+
+
     }
 }
 
