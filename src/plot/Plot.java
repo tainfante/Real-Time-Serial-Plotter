@@ -24,6 +24,8 @@ public class Plot {
 
     private static volatile Plot PlotINSTANCE;
 
+    private int numberOfChannels=8;
+
     public void stopPlotting() {
         stop = true;
 
@@ -54,63 +56,113 @@ public class Plot {
                 while (!stop) {
                     try {
                         receivedFrame = PortReader.getInstance().getFrameBuffer().take();
-                    }
-                    catch (InterruptedException e) {
+                    } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-                    receivedFrame.setNumberOfChannels(receivedFrame.getChannelData().size());
-                    for (int i = 0; i < receivedFrame.getNumberOfChannels(); i++) {
-                        final int data = receivedFrame.getChannelData().get(i);
-                        final int j = i;
-                        final Frame frame = receivedFrame;
-
-                        Platform.runLater(() -> {
-
-                            switch (j) {
-                                case 0:
-                                    if (null != series1) series1.getData().add(new XYChart.Data<>(frame.getTime(), data));
-                                    break;
-                                case 1:
-                                    if (null != series2) series2.getData().add(new XYChart.Data<>(frame.getTime(), data));
-                                    break;
-                                case 2:
-                                    if (null != series3) series3.getData().add(new XYChart.Data<>(frame.getTime(), data));
-                                    break;
-                                case 3:
-                                    if (null != series4) series4.getData().add(new XYChart.Data<>(frame.getTime(), data));
-                                    break;
-                                case 4:
-                                    if (null != series5) series5.getData().add(new XYChart.Data<>(frame.getTime(), data));
-                                    break;
-                                case 5:
-                                    if (null != series6) series6.getData().add(new XYChart.Data<>(frame.getTime(), data));
-                                    break;
-                                case 6:
-                                    if (null != series7) series7.getData().add(new XYChart.Data<>(frame.getTime(), data));
-                                    break;
-                                case 7:
-                                    if (null != series8) series8.getData().add(new XYChart.Data<>(frame.getTime(), data));
-                                    break;
+                    if (null != receivedFrame) {
+                        receivedFrame.setNumberOfChannels(receivedFrame.getChannelData().size());
+                        if (receivedFrame.getNumberOfChannels() != numberOfChannels) {
+                            numberOfChannels = receivedFrame.getNumberOfChannels();
+                            for (int i = 8; i > 8 - numberOfChannels; i++) {
+                                int finalI = i;
+                                Platform.runLater(() -> {
+                                    switch (finalI) {
+                                        case 0:
+                                            Chart.getInstance().checkOne.setDisable(true);
+                                            break;
+                                        case 1:
+                                            Chart.getInstance().checkTwo.setDisable(true);
+                                            break;
+                                        case 2:
+                                            Chart.getInstance().checkThree.setDisable(true);
+                                            break;
+                                        case 3:
+                                            Chart.getInstance().checkFour.setDisable(true);
+                                            break;
+                                        case 4:
+                                            Chart.getInstance().checkFive.setDisable(true);
+                                            break;
+                                        case 5:
+                                            Chart.getInstance().checkSix.setDisable(true);
+                                            break;
+                                        case 6:
+                                            Chart.getInstance().checkSeven.setDisable(true);
+                                            break;
+                                        case 7:
+                                            Chart.getInstance().checkEight.setDisable(true);
+                                            break;
+                                    }
+                                });
                             }
-                        });
-                    }
-                    final boolean update = Chart.getInstance().update();
-                    final int samples = Chart.getInstance().numberOfSamples();
-                    if (update) {
-                        Platform.runLater(() -> {
-                            try {
-                                if (null != series1) series1.getData().remove(0, (series1.getData().size() - samples));
-                                if (null != series2) series2.getData().remove(0, (series2.getData().size() - samples));
-                                if (null != series3) series3.getData().remove(0, (series3.getData().size() - samples));
-                                if (null != series4) series4.getData().remove(0, (series4.getData().size() - samples));
-                                if (null != series5) series5.getData().remove(0, (series5.getData().size() - samples));
-                                if (null != series6) series6.getData().remove(0, (series6.getData().size() - samples));
-                                if (null != series7) series7.getData().remove(0, (series7.getData().size() - samples));
-                                if (null != series8) series8.getData().remove(0, (series8.getData().size() - samples));
-                            } catch (NullPointerException nul) {
-                                System.out.println("No such data in the Series");
-                            }
-                        });
+                        }
+
+                        for (int i = 0; i < receivedFrame.getNumberOfChannels(); i++) {
+                            final int data = receivedFrame.getChannelData().get(i);
+                            final int j = i;
+                            final Frame frame = receivedFrame;
+                            final XYChart.Data<Date, Number> chartdata=new XYChart.Data<>(frame.getTime(),data);
+                                switch (j) {
+                                    case 0:
+                                        if (null != series1)
+                                            Platform.runLater(() -> series1.getData().add(chartdata));
+                                        break;
+                                    case 1:
+                                        if (null != series2)
+                                            Platform.runLater(() -> series2.getData().add(chartdata));
+                                        break;
+                                    case 2:
+                                        if (null != series3)
+                                            Platform.runLater(() -> series3.getData().add(chartdata));
+                                        break;
+                                    case 3:
+                                        if (null != series4)
+                                            Platform.runLater(() -> series4.getData().add(chartdata));
+                                        break;
+                                    case 4:
+                                        if (null != series5)
+                                            Platform.runLater(() -> series5.getData().add(chartdata));
+                                        break;
+                                    case 5:
+                                        if (null != series6)
+                                            Platform.runLater(() -> series6.getData().add(chartdata));
+                                        break;
+                                    case 6:
+                                        if (null != series7)
+                                            Platform.runLater(() -> series7.getData().add(chartdata));
+                                        break;
+                                    case 7:
+                                        if (null != series8)
+                                            Platform.runLater(() -> series8.getData().add(chartdata));
+                                        break;
+                                }
+                        }
+                        boolean update = Chart.getInstance().update();
+                        final int samples = Chart.getInstance().numberOfSamples();
+                        if (update) {
+                            final int removeData=series1.getData().size()-samples;
+                            Platform.runLater(() -> {
+                                try {
+                                    if (null != series1)
+                                        series1.getData().remove(0, removeData);
+                                    if (null != series2)
+                                        series2.getData().remove(0, removeData);
+                                    if (null != series3)
+                                        series3.getData().remove(0, removeData);
+                                    if (null != series4)
+                                        series4.getData().remove(0, removeData);
+                                    if (null != series5)
+                                        series5.getData().remove(0, removeData);
+                                    if (null != series6)
+                                        series6.getData().remove(0, removeData);
+                                    if (null != series7)
+                                        series7.getData().remove(0, removeData);
+                                    if (null != series8)
+                                        series8.getData().remove(0, removeData);
+                                } catch (NullPointerException nul) {
+                                    System.out.println("No such data in the Series");
+                                }
+                            });
+                        }
                     }
                 }
                 System.out.println("Stopped plotting thread");
