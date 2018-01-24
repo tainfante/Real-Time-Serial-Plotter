@@ -68,28 +68,28 @@ public class Plot {
 
                             switch (j) {
                                 case 0:
-                                    series1.getData().add(new XYChart.Data<>(frame.getTime(), data));
+                                    if (null != series1) series1.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 1:
-                                    series2.getData().add(new XYChart.Data<>(frame.getTime(), data));
+                                    if (null != series2) series2.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 2:
-                                    series3.getData().add(new XYChart.Data<>(frame.getTime(), data));
+                                    if (null != series3) series3.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 3:
-                                    series4.getData().add(new XYChart.Data<>(frame.getTime(), data));
+                                    if (null != series4) series4.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 4:
-                                    series5.getData().add(new XYChart.Data<>(frame.getTime(), data));
+                                    if (null != series5) series5.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 5:
-                                    series6.getData().add(new XYChart.Data<>(frame.getTime(), data));
+                                    if (null != series6) series6.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 6:
-                                    series7.getData().add(new XYChart.Data<>(frame.getTime(), data));
+                                    if (null != series7) series7.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 7:
-                                    series8.getData().add(new XYChart.Data<>(frame.getTime(), data));
+                                    if (null != series8) series8.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                             }
                         });
@@ -99,14 +99,14 @@ public class Plot {
                     if (update) {
                         Platform.runLater(() -> {
                             try {
-                                series1.getData().remove(0, (series1.getData().size() - samples));
-                                series2.getData().remove(0, (series2.getData().size() - samples));
-                                series3.getData().remove(0, (series3.getData().size() - samples));
-                                series4.getData().remove(0, (series4.getData().size() - samples));
-                                series5.getData().remove(0, (series5.getData().size() - samples));
-                                series6.getData().remove(0, (series6.getData().size() - samples));
-                                series7.getData().remove(0, (series7.getData().size() - samples));
-                                series8.getData().remove(0, (series8.getData().size() - samples));
+                                if (null != series1) series1.getData().remove(0, (series1.getData().size() - samples));
+                                if (null != series2) series2.getData().remove(0, (series2.getData().size() - samples));
+                                if (null != series3) series3.getData().remove(0, (series3.getData().size() - samples));
+                                if (null != series4) series4.getData().remove(0, (series4.getData().size() - samples));
+                                if (null != series5) series5.getData().remove(0, (series5.getData().size() - samples));
+                                if (null != series6) series6.getData().remove(0, (series6.getData().size() - samples));
+                                if (null != series7) series7.getData().remove(0, (series7.getData().size() - samples));
+                                if (null != series8) series8.getData().remove(0, (series8.getData().size() - samples));
                             } catch (NullPointerException nul) {
                                 System.out.println("No such data in the Series");
                             }
