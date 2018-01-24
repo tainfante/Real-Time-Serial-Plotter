@@ -1,6 +1,7 @@
 package mainwindow;
 
 import classes.DateAxis;
+import classes.Frame;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,14 +23,14 @@ public class Chart implements Initializable {
     private static volatile Chart ChartINSTANCE;
     @FXML
     LineChart<Date, Number> lchart;
-    public static XYChart.Series series1 = new XYChart.Series();
-    public static XYChart.Series series2 = new XYChart.Series();
-    public static XYChart.Series series3 = new XYChart.Series();
-    public static XYChart.Series series4 = new XYChart.Series();
-    public static XYChart.Series series5 = new XYChart.Series();
-    public static XYChart.Series series6 = new XYChart.Series();
-    public static XYChart.Series series7 = new XYChart.Series();
-    public static XYChart.Series series8 = new XYChart.Series();
+    public static XYChart.Series<Date, Number> series1 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series2 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series3 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series4 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series5 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series6 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series7 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series8 = new XYChart.Series<>();
     @FXML
     private DateAxis xAxis = new DateAxis();
     @FXML
@@ -59,7 +60,7 @@ public class Chart implements Initializable {
     @FXML
     private TextField maxText;
 
-    int samples=200;
+    private int samples=200;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -213,7 +214,7 @@ public class Chart implements Initializable {
         }
     }
 
-    public void channelUpdate(int channelNumber, String name, Color color) {
+    void channelUpdate(int channelNumber, String name, Color color) {
 
         String rgb = String.format("%d, %d, %d",
                 (int) (color.getRed() * 255),
