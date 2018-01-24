@@ -63,7 +63,7 @@ public class Plot {
                         receivedFrame.setNumberOfChannels(receivedFrame.getChannelData().size());
                         if (receivedFrame.getNumberOfChannels() != numberOfChannels) {
                             numberOfChannels = receivedFrame.getNumberOfChannels();
-                            for (int i = 8; i > 8 - numberOfChannels; i++) {
+                            for (int i = 8; i > numberOfChannels; i--) {
                                 int finalI = i;
                                 Platform.runLater(() -> {
                                     switch (finalI) {
@@ -136,7 +136,7 @@ public class Plot {
                                         break;
                                 }
                         }
-                        boolean update = Chart.getInstance().update();
+                        final boolean update = Chart.getInstance().update();
                         final int samples = Chart.getInstance().numberOfSamples();
                         if (update) {
                             final int removeData=series1.getData().size()-samples;

@@ -475,6 +475,7 @@ public class Chart implements Initializable {
     public boolean update() {
 
         if (null != series1) {
+            System.out.println(series1.getData().sorted().size());
             return series1.getData().sorted().size() > samples;
         }
         else return false;
