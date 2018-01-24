@@ -51,7 +51,7 @@ public class Frame {
         return date;
     }
 
-    public String toString(boolean checks[])
+    public String toString(boolean checks[], String format)
     {
         StringBuilder s = new StringBuilder();
 
@@ -59,7 +59,14 @@ public class Frame {
         {
             if (checks[i])
             {
-                s.append(channelData.get(i).toString()).append(" ");
+                if(format.equals("hex"))
+                {
+                    s.append(Integer.toHexString(channelData.get(i))).append(" ");
+                }
+                else if(format.equals("decimal"))
+                {
+                    s.append(channelData.get(i).toString()).append(" ");
+                }
             }
             else
             {

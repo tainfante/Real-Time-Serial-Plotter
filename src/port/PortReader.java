@@ -86,12 +86,9 @@ public class PortReader extends Port
 
                         if ( CRC16.checksumIsAgree(bufferIn) )
                         {
-                            System.out.println("The checksums agrees.");
-
                             try
                             {
                                 frame = mapBufferToFrame(bufferIn);
-                                System.out.println("Buffer is mapped to object of Frame type.");
                                 listening = false;
                             }
                             catch (Exception e)
@@ -104,7 +101,6 @@ public class PortReader extends Port
                         }
                         else
                         {
-                            Log.getInstance().log("The checksums doesn't agrees.");
                             listening = false;
                         }
                     }
@@ -183,8 +179,6 @@ public class PortReader extends Port
         // create a new thread and listen for frame, then add to frame buffer
         Thread readingThread = new Thread(() ->
         {
-            System.out.println("Started reading thread.");
-
             while (!stopReading)
             {
                 try
@@ -199,12 +193,10 @@ public class PortReader extends Port
                         {
                             exportFrameBuffer.put(frame);
                         }
-
-                        System.out.println("New frame is added to the queue.");
                     }
                     else
                     {
-                        System.out.println("Read frame is a null.");
+                        //System.out.println("Read frame is a null.");
                     }
                 }
                 catch (InterruptedException e)
@@ -212,10 +204,8 @@ public class PortReader extends Port
                     e.printStackTrace();
                 }
             }
-
-            System.out.println("Stopped reading thread.");
         });
-        readingThread.setName("FrameReadingThread");
+        readingThread.setName("Frame Reading Thread");
         readingThread.start();
     }
 

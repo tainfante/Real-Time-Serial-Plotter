@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import mainwindow.CaptureController;
 import port.PortReader;
 
 public class Main extends Application
@@ -20,7 +21,11 @@ public class Main extends Application
         primaryStage.setMinHeight(450.0);
         primaryStage.setMinWidth(620.0);
 
-        primaryStage.setOnCloseRequest(event -> PortReader.getInstance().setStopReading(true));
+        primaryStage.setOnCloseRequest(event ->
+        {
+            CaptureController.isActiveExport = false;
+            PortReader.getInstance().setStopReading(true);
+        });
 
         primaryStage.show();
     }
