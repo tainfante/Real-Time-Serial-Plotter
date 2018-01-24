@@ -1,12 +1,16 @@
 package mainwindow;
 
 import classes.DateAxis;
+import classes.Frame;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.chart.*;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import plot.Plot;
 import java.net.URL;
@@ -19,14 +23,14 @@ public class Chart implements Initializable {
     private static volatile Chart ChartINSTANCE;
     @FXML
     LineChart<Date, Number> lchart;
-    public static XYChart.Series series1 = new XYChart.Series();
-    public static XYChart.Series series2 = new XYChart.Series();
-    public static XYChart.Series series3 = new XYChart.Series();
-    public static XYChart.Series series4 = new XYChart.Series();
-    public static XYChart.Series series5 = new XYChart.Series();
-    public static XYChart.Series series6 = new XYChart.Series();
-    public static XYChart.Series series7 = new XYChart.Series();
-    public static XYChart.Series series8 = new XYChart.Series();
+    public static XYChart.Series<Date, Number> series1 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series2 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series3 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series4 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series5 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series6 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series7 = new XYChart.Series<>();
+    public static XYChart.Series<Date, Number> series8 = new XYChart.Series<>();
     @FXML
     private DateAxis xAxis = new DateAxis();
     @FXML
@@ -48,7 +52,7 @@ public class Chart implements Initializable {
     @FXML
     public CheckBox checkEight;
     @FXML
-    private TextField sampleText;
+    public TextField sampleText;
     @FXML
     private ComboBox<String> variableBox;
     @FXML
@@ -56,12 +60,11 @@ public class Chart implements Initializable {
     @FXML
     private TextField maxText;
 
-    private String selectedTime;
-    Calendar upperCalendar;
-    Calendar lowerCalendar;
+    private int samples=200;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        sampleText.setPromptText("200");
         lchart.setTitle("Serial Data");
         lchart.getStyleClass().add("title");
         lchart.setCreateSymbols(false);
@@ -73,11 +76,12 @@ public class Chart implements Initializable {
         checkSix.setSelected(true);
         checkSeven.setSelected(true);
         checkEight.setSelected(true);
-        lchart.getData().addAll(series1,series2,series3,series4,series5,series6,series7,series8);
+        lchart.getData().addAll(series1, series2, series3, series4, series5, series6, series7, series8);
         lchart.setLegendVisible(false);
         variableBox.getItems().addAll("8 bits", "16 bits", "32 bits");
         yAxis.setForceZeroInRange(false);
         xAxis.setAutoRanging(true);
+        xAxis.setTickLabelsVisible(false);
 
         //Styling chart with colors//
 
@@ -151,28 +155,26 @@ public class Chart implements Initializable {
         checkEight.setStyle("-fx-text-fill:rgb(" + rgb8 + ");");
 
         //////////////////////////////////////////////////////////
+
     }
 
-    public Chart()
-    {
+    public Chart() {
         ChartINSTANCE = this;
     }
 
-    public static Chart getInstance()
-    {
+    public static Chart getInstance() {
         return ChartINSTANCE;
     }
 
     public void onSubmitChanges(ActionEvent actionEvent) {
-        String MIN=minText.getText();
-        String MAX=maxText.getText();
+        String MIN = minText.getText();
+        String MAX = maxText.getText();
         double min;
         double max;
-        try
-        {
+        try {
             min = Double.parseDouble(MIN);
             max = Double.parseDouble(MAX);
-            if(min>max){
+            if (min > max) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Wrong data");
                 alert.setHeaderText("You have submitted wrong data");
@@ -182,9 +184,7 @@ public class Chart implements Initializable {
             yAxis.setAutoRanging(false);
             yAxis.setLowerBound(min);
             yAxis.setUpperBound(max);
-        }
-        catch(NumberFormatException nfe)
-        {
+        } catch (NumberFormatException nfe) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Wrong data type");
             alert.setHeaderText("You have submitted wrong data");
@@ -195,37 +195,34 @@ public class Chart implements Initializable {
     }
 
     public void onChooseVariable(ActionEvent actionEvent) {
-        String variableType=variableBox.getSelectionModel().getSelectedItem();
-        if(variableType.equals("8 bits")){
+        String variableType = variableBox.getSelectionModel().getSelectedItem();
+        if (variableType.equals("8 bits")) {
             yAxis.setAutoRanging(false);
             yAxis.setLowerBound(-128);
             yAxis.setUpperBound(127);
 
-        }
-        else if(variableType.equals("16 bits")){
+        } else if (variableType.equals("16 bits")) {
             yAxis.setAutoRanging(false);
             yAxis.setLowerBound(-32768);
-            yAxis.setUpperBound( 32767);
-        }
-        else if(variableType.equals("32 bits")){
+            yAxis.setUpperBound(32767);
+        } else if (variableType.equals("32 bits")) {
             yAxis.setAutoRanging(false);
             yAxis.setLowerBound(-2147483648);
-            yAxis.setUpperBound( 2147483647);
-        }
-        else if(variableType.isEmpty()){
+            yAxis.setUpperBound(2147483647);
+        } else if (variableType.isEmpty()) {
             yAxis.setAutoRanging(true);
         }
     }
 
-    public void channelUpdate(int channelNumber, String name, Color color){
+    void channelUpdate(int channelNumber, String name, Color color) {
 
         String rgb = String.format("%d, %d, %d",
                 (int) (color.getRed() * 255),
                 (int) (color.getGreen() * 255),
                 (int) (color.getBlue() * 255));
 
-        if(null!=ChartINSTANCE){
-            switch(channelNumber){
+        if (null != ChartINSTANCE) {
+            switch (channelNumber) {
                 case 1:
                     checkOne.setText(name);
                     checkOne.setStyle("-fx-text-fill:rgb(" + rgb + ");");
@@ -241,37 +238,37 @@ public class Chart implements Initializable {
                 case 3:
                     checkThree.setText(name);
                     checkThree.setStyle("-fx-text-fill:rgb(" + rgb + ");");
-                    Node line3 = series1.getNode().lookup(".chart-series-line");
+                    Node line3 = series3.getNode().lookup(".chart-series-line");
                     line3.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 4:
                     checkFour.setText(name);
                     checkFour.setStyle("-fx-text-fill:rgb(" + rgb + ");");
-                    Node line4 = series1.getNode().lookup(".chart-series-line");
+                    Node line4 = series4.getNode().lookup(".chart-series-line");
                     line4.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 5:
                     checkFive.setText(name);
                     checkFive.setStyle("-fx-text-fill:rgb(" + rgb + ");");
-                    Node line5 = series1.getNode().lookup(".chart-series-line");
+                    Node line5 = series5.getNode().lookup(".chart-series-line");
                     line5.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 6:
                     checkSix.setText(name);
                     checkSix.setStyle("-fx-text-fill:rgb(" + rgb + ");");
-                    Node line6 = series1.getNode().lookup(".chart-series-line");
+                    Node line6 = series6.getNode().lookup(".chart-series-line");
                     line6.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 7:
                     checkSeven.setText(name);
                     checkSeven.setStyle("-fx-text-fill:rgb(" + rgb + ");");
-                    Node line7 = series1.getNode().lookup(".chart-series-line");
+                    Node line7 = series7.getNode().lookup(".chart-series-line");
                     line7.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 8:
                     checkEight.setText(name);
                     checkEight.setStyle("-fx-text-fill:rgb(" + rgb + ");");
-                    Node line8 = series1.getNode().lookup(".chart-series-line");
+                    Node line8 = series8.getNode().lookup(".chart-series-line");
                     line8.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
             }
@@ -280,127 +277,138 @@ public class Chart implements Initializable {
     }
 
     public void onCheck1(ActionEvent actionEvent) {
-        if(!checkOne.isSelected()){
+        if (!checkOne.isSelected()) {
             lchart.getData().remove(series1);
-        }
-        else {
-            lchart.getData().add(series1);
-        }
-    }
-    public void onCheck2(ActionEvent actionEvent) {
-        if(!checkTwo.isSelected()){
-            lchart.getData().remove(series2);
-        }
-        else {
-            lchart.getData().add(series2);
-        }
-    }
-    public void onCheck3(ActionEvent actionEvent) {
-        if(!checkThree.isSelected()){
-            lchart.getData().remove(series3);
-        }
-        else {
-            lchart.getData().add(series3);
-        }
-    }
-    public void onCheck4(ActionEvent actionEvent) {
-        if(!checkFour.isSelected()){
-            lchart.getData().remove(series4);
-        }
-        else {
-            lchart.getData().add(series4);
-        }
-    }
-    public void onCheck5(ActionEvent actionEvent) {
-        if(!checkFive.isSelected()){
-            lchart.getData().remove(series5);
-        }
-        else {
-            lchart.getData().add(series5);
-        }
-    }
-    public void onCheck6(ActionEvent actionEvent) {
-        if(!checkSix.isSelected()){
-            lchart.getData().remove(series6);
-        }
-        else {
-            lchart.getData().add(series6);
-        }
-    }
-    public void onCheck7(ActionEvent actionEvent) {
-        if(!checkSeven.isSelected()){
-            lchart.getData().remove(series7);
-        }
-        else {
-            lchart.getData().add(series7);
-        }
-    }
-    public void onCheck8(ActionEvent actionEvent) {
-        if(!checkEight.isSelected()){
-            lchart.getData().remove(series8);
-        }
-        else {
-            lchart.getData().add(series8);
+        } else {
+            if (!lchart.getData().contains(series1)) {
+                lchart.getData().add(series1);
+                channelUpdate(1, checkOne.getText(), Color.RED);
+            }
         }
     }
 
-    public void updateXAxis() {
-        int samples;
-        if(null==sampleText){
-            samples=300;
-        }
-        else{
-            selectedTime = sampleText.getText();
-            samples = Integer.parseInt(selectedTime);
-        }
-        if (series1.getData().sorted().size() > samples) {
-            try {
-                series1.getData().remove(0, (series1.getData().size() - samples));
-                series2.getData().remove(0, (series2.getData().size() - samples));
-                series3.getData().remove(0, (series3.getData().size() - samples));
-                series4.getData().remove(0, (series4.getData().size() - samples));
-                series5.getData().remove(0, (series5.getData().size() - samples));
-                series6.getData().remove(0, (series6.getData().size() - samples));
-                series7.getData().remove(0, (series7.getData().size() - samples));
-                series8.getData().remove(0, (series8.getData().size() - samples));
+    public void onCheck2(ActionEvent actionEvent) {
+        if (!checkTwo.isSelected()) {
+            lchart.getData().remove(series2);
+        } else {
+            if (!lchart.getData().contains(series2)) {
+                lchart.getData().add(series2);
+                channelUpdate(2, checkTwo.getText(), Color.BLUE);
             }
-            catch(NullPointerException nul){
-                System.out.println("No such data in the Series");
+        }
+    }
+
+    public void onCheck3(ActionEvent actionEvent) {
+        if (!checkThree.isSelected()) {
+            lchart.getData().remove(series3);
+        } else {
+            if (!lchart.getData().contains(series3)) {
+                lchart.getData().add(series3);
+                channelUpdate(3, checkThree.getText(), Color.BLACK);
+            }
+        }
+    }
+
+    public void onCheck4(ActionEvent actionEvent) {
+        if (!checkFour.isSelected()) {
+            lchart.getData().remove(series4);
+        } else {
+            if (!lchart.getData().contains(series4)) {
+                lchart.getData().add(series4);
+                channelUpdate(4, checkFour.getText(), Color.GRAY);
+            }
+        }
+    }
+
+    public void onCheck5(ActionEvent actionEvent) {
+        if (!checkFive.isSelected()) {
+            lchart.getData().remove(series5);
+        } else {
+            if (!lchart.getData().contains(series5)) {
+                lchart.getData().add(series5);
+                channelUpdate(5, checkFive.getText(), Color.GREEN);
+            }
+        }
+    }
+
+    public void onCheck6(ActionEvent actionEvent) {
+        if (!checkSix.isSelected()) {
+            lchart.getData().remove(series6);
+        } else {
+            if (!lchart.getData().contains(series6)) {
+                lchart.getData().add(series6);
+                channelUpdate(6, checkSix.getText(), Color.DARKBLUE);
+            }
+        }
+    }
+
+    public void onCheck7(ActionEvent actionEvent) {
+        if (!checkSeven.isSelected()) {
+            lchart.getData().remove(series7);
+        } else {
+            if (!lchart.getData().contains(series7)) {
+                lchart.getData().add(series7);
+                channelUpdate(7, checkSeven.getText(), Color.VIOLET);
+            }
+        }
+    }
+
+    public void onCheck8(ActionEvent actionEvent) {
+        if (!checkEight.isSelected()) {
+            lchart.getData().remove(series8);
+        } else {
+            if (!lchart.getData().contains(series8)) {
+                lchart.getData().add(series8);
+                channelUpdate(8, checkEight.getText(), Color.ORANGE);
             }
         }
     }
 
     public int numberOfSamples(){
-        int samples;
-        if(null==sampleText){
-            samples=200;
-        }
-        else{
-            selectedTime = sampleText.getText();
-            samples = Integer.parseInt(selectedTime);
-        }
         return samples;
     }
 
     public boolean update(){
-        int samples;
-        if(null==sampleText){
-            samples=200;
-        }
-        else{
-            selectedTime = sampleText.getText();
-            samples = Integer.parseInt(selectedTime);
-        }
+
         if (series1.getData().sorted().size() > samples) {
             return true;
         }
         else{
             return false;
         }
-
     }
 
-    public void onEnter(ActionEvent actionEvent) {
-        updateXAxis();
+    public void onKeyPressed(KeyEvent keyEvent) {
+        if(keyEvent.getCode() == KeyCode.ENTER){
+            String selectedTime = sampleText.getText();
+
+            try{
+                samples = Integer.parseInt(selectedTime);
+            }
+            catch(NumberFormatException num){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Wrong data type");
+                alert.setHeaderText("You have submitted wrong data");
+                alert.setContentText("Please, set some numbers");
+                alert.showAndWait();
+                samples=200;
+            }
+
+            if (series1.getData().sorted().size() > samples) {
+                try {
+                    series1.getData().remove(0, (series1.getData().size() - samples));
+                    series2.getData().remove(0, (series2.getData().size() - samples));
+                    series3.getData().remove(0, (series3.getData().size() - samples));
+                    series4.getData().remove(0, (series4.getData().size() - samples));
+                    series5.getData().remove(0, (series5.getData().size() - samples));
+                    series6.getData().remove(0, (series6.getData().size() - samples));
+                    series7.getData().remove(0, (series7.getData().size() - samples));
+                    series8.getData().remove(0, (series8.getData().size() - samples));
+                }
+                catch (NullPointerException nul) {
+                    System.out.println("No such data in the Series");
+                }
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import mainwindow.CaptureController;
+import plot.Plot;
 import port.PortReader;
 
 public class Main extends Application
@@ -25,6 +26,7 @@ public class Main extends Application
         {
             CaptureController.isActiveExport = false;
             PortReader.getInstance().setStopReading(true);
+            Plot.getInstance().setStopPlotting(true);
         });
 
         primaryStage.show();

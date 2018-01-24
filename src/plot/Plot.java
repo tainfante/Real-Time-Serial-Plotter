@@ -24,9 +24,13 @@ public class Plot {
 
     private static volatile Plot PlotINSTANCE;
 
-    public boolean stopPlotting() {
-        return stop = true;
+    public void stopPlotting() {
+        stop = true;
 
+    }
+
+    public void setStopPlotting(boolean stop){
+        this.stop=stop;
     }
 
 
@@ -41,25 +45,18 @@ public class Plot {
         return PlotINSTANCE;
     }
 
-    private Frame plotData() throws InterruptedException {
-        Frame frame;
-        frame = PortReader.getInstance().getFrameBuffer().take();
-        return frame;
-    }
-
     public void startPlotting() {
 
-        new Thread(new Runnable() {
+        Thread plottingThread=new Thread(new Runnable() {
             Frame receivedFrame;
-
             @Override
             public void run() {
                 while (!stop) {
                     try {
-                        receivedFrame = plotData();
-                    } catch (InterruptedException e) {
+                        receivedFrame = PortReader.getInstance().getFrameBuffer().take();
+                    }
+                    catch (InterruptedException e) {
                         e.printStackTrace();
-
                     }
                     receivedFrame.setNumberOfChannels(receivedFrame.getChannelData().size());
                     for (int i = 0; i < receivedFrame.getNumberOfChannels(); i++) {
@@ -71,28 +68,28 @@ public class Plot {
 
                             switch (j) {
                                 case 0:
-                                    series1.getData().add(new XYChart.Data(frame.getTime(), data));
+                                    series1.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 1:
-                                    series2.getData().add(new XYChart.Data(frame.getTime(), data));
+                                    series2.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 2:
-                                    series3.getData().add(new XYChart.Data(frame.getTime(), data));
+                                    series3.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 3:
-                                    series4.getData().add(new XYChart.Data(frame.getTime(), data));
+                                    series4.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 4:
-                                    series5.getData().add(new XYChart.Data(frame.getTime(), data));
+                                    series5.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 5:
-                                    series6.getData().add(new XYChart.Data(frame.getTime(), data));
+                                    series6.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 6:
-                                    series7.getData().add(new XYChart.Data(frame.getTime(), data));
+                                    series7.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                                 case 7:
-                                    series8.getData().add(new XYChart.Data(frame.getTime(), data));
+                                    series8.getData().add(new XYChart.Data<>(frame.getTime(), data));
                                     break;
                             }
                         });
@@ -116,8 +113,12 @@ public class Plot {
                         });
                     }
                 }
+                System.out.println("Stopped plotting thread");
             }
-        }).start();
+        });
+        plottingThread.setDaemon(true);
+        plottingThread.setName("Plotting thread");
+        plottingThread.start();
     }
 }
 

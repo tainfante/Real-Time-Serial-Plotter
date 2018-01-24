@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import java.net.*?>
 <?import javafx.geometry.*?>
@@ -16,12 +18,8 @@
 <?import javafx.scene.layout.VBox?>
 <?import java.net.URL?>
 
-
 <?import classes.DateAxis?>
 <BorderPane minHeight="325.0" minWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.Chart">
-    <stylesheets>
-        <URL value="@../stylesheets/ChartCSS.css" />
-    </stylesheets>
     <center>
             <LineChart fx:id="lchart" layoutY="37.0" prefHeight="226.0" prefWidth="455.0">
 
@@ -34,16 +32,16 @@
             </LineChart>
     </center>
     <right>
-        <VBox spacing="10.0" styleClass="background" BorderPane.alignment="CENTER">
+        <VBox spacing="10.0" BorderPane.alignment="CENTER">
            <children>
-               <CheckBox fx:id="checkOne" layoutX="474.0" layoutY="87.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 1" onAction="#onCheck1"/>
-               <CheckBox fx:id="checkTwo" layoutX="474.0" layoutY="104.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 2" onAction="#onCheck2"/>
-               <CheckBox fx:id="checkThree" layoutX="474.0" layoutY="121.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 3" onAction="#onCheck3"/>
-               <CheckBox fx:id="checkFour" layoutX="474.0" layoutY="142.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 4" onAction="#onCheck4"/>
-               <CheckBox fx:id="checkFive" layoutX="474.0" layoutY="161.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 5" onAction="#onCheck5"/>
-               <CheckBox fx:id="checkSix" layoutX="474.0" layoutY="178.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 6" onAction="#onCheck6"/>
-               <CheckBox fx:id="checkSeven" layoutX="474.0" layoutY="53.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 7" onAction="#onCheck7"/>
-               <CheckBox fx:id="checkEight" layoutX="474.0" layoutY="70.0" mnemonicParsing="false" styleClass="checkedBox" text="Channel 8" onAction="#onCheck8"/>
+               <CheckBox fx:id="checkOne" layoutX="474.0" layoutY="87.0" mnemonicParsing="false" onAction="#onCheck1" text="Channel 1" />
+               <CheckBox fx:id="checkTwo" layoutX="474.0" layoutY="104.0" mnemonicParsing="false" onAction="#onCheck2" text="Channel 2" />
+               <CheckBox fx:id="checkThree" layoutX="474.0" layoutY="121.0" mnemonicParsing="false" onAction="#onCheck3" text="Channel 3" />
+               <CheckBox fx:id="checkFour" layoutX="474.0" layoutY="142.0" mnemonicParsing="false" onAction="#onCheck4" text="Channel 4" />
+               <CheckBox fx:id="checkFive" layoutX="474.0" layoutY="161.0" mnemonicParsing="false" onAction="#onCheck5" text="Channel 5" />
+               <CheckBox fx:id="checkSix" layoutX="474.0" layoutY="178.0" mnemonicParsing="false" onAction="#onCheck6" text="Channel 6" />
+               <CheckBox fx:id="checkSeven" layoutX="474.0" layoutY="53.0" mnemonicParsing="false" onAction="#onCheck7" text="Channel 7" />
+               <CheckBox fx:id="checkEight" layoutX="474.0" layoutY="70.0" mnemonicParsing="false" onAction="#onCheck8" text="Channel 8" />
            </children>
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -57,71 +55,103 @@
     </right>
     <bottom>
         <VBox>
-            <Label text="AXIS SETTINGS" alignment="CENTER"/>
-            <HBox>
-                <children>
-                    <Label text="Set Y Axis parameters" prefWidth="310" styleClass="labels"/>
-                    <Label text="Set X Axis parameters" prefWidth="310" styleClass="labels"/>
-                </children>
-            </HBox>
-            <HBox spacing="10.0" styleClass="background">
-                <children>
-                    <VBox>
-                        <children>
-                            <HBox prefWidth="310" alignment="CENTER">
-                                <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                </padding>
-                                <children>
-                                    <Label text="MIN VALUE:">
-                                        <padding>
-                                            <Insets right="5.0" />
-                                        </padding>
-                                    </Label>
-                                    <TextField fx:id="minText" prefWidth="40">
-                                        <padding>
-                                            <Insets right="5.0" />
-                                        </padding>
-                                    </TextField>
-                                    <Label text="MAX VALUE:">
-                                        <padding>
-                                            <Insets right="5.0" />
-                                        </padding>
-                                    </Label>
-                                    <TextField fx:id="maxText" prefWidth="40">
-                                        <padding>
-                                            <Insets right="5.0" />
-                                        </padding>
-                                    </TextField>
-                                    <Button onAction="#onSubmitChanges" text="Submit" />
-                                </children>
-                            </HBox>
-                            <HBox>
-                                <children>
-                                    <Label text="Variables type:"/>
-                                    <ComboBox prefWidth="150.0" fx:id="variableBox" onAction="#onChooseVariable"/>
-                                </children>
-                            </HBox>
-                        </children>
-                    </VBox>
-                    <VBox>
-                        <children>
-                            <HBox prefWidth="310" alignment="CENTER">
-                                <padding>
-                                    <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-                                </padding>
-                                <children>
-                                    <Label text="Show number of samples:" />
-                                    <TextField fx:id="samplesText" onAction="#onEnter"/>
-                                </children>
-                            </HBox>
-                        </children>
-                    </VBox>
-                </children>
-                <BorderPane.margin>
-                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                </BorderPane.margin>
-            </HBox>
+           <children>
+               <HBox>
+                   <children>
+                       <Label alignment="CENTER" contentDisplay="CENTER" prefWidth="310" style="-fx-border-color: black;" text="Set Y Axis parameters">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                       <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="329.0" style="-fx-border-color: black;" text="Set X Axis parameters" textAlignment="CENTER">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font>
+                  </Label>
+                   </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               </HBox>
+               <HBox spacing="10.0">
+                   <children>
+                       <VBox>
+                           <children>
+                               <HBox alignment="CENTER" prefWidth="310" spacing="5.0">
+                                   <padding>
+                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                   </padding>
+                                   <children>
+                                       <Label text="MIN VALUE:">
+                                           <padding>
+                                               <Insets right="5.0" />
+                                           </padding>
+                                       </Label>
+                                       <TextField fx:id="minText" prefWidth="40">
+                                           <padding>
+                                               <Insets right="5.0" />
+                                           </padding>
+                                       </TextField>
+                                       <Label text="MAX VALUE:">
+                                           <padding>
+                                               <Insets right="5.0" />
+                                           </padding>
+                                       </Label>
+                                       <TextField fx:id="maxText" prefWidth="40">
+                                           <padding>
+                                               <Insets right="5.0" />
+                                           </padding>
+                                       </TextField>
+                                       <Button onAction="#onSubmitChanges" text="Submit" />
+                                   </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                               </HBox>
+                               <HBox alignment="CENTER" spacing="5.0">
+                                   <children>
+                                       <Label text="Variables type:">
+                                 <HBox.margin>
+                                    <Insets left="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                                       <ComboBox fx:id="variableBox" onAction="#onChooseVariable" prefWidth="150.0" />
+                                   </children>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </padding>
+                               </HBox>
+                           </children>
+                       </VBox>
+                       <VBox prefHeight="70.0" prefWidth="321.0" spacing="5.0">
+                           <children>
+                               <HBox alignment="CENTER" prefWidth="310">
+                                   <padding>
+                                       <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                   </padding>
+                                   <children>
+                                       <Label text="Show number of samples:">
+                                 <HBox.margin>
+                                    <Insets right="5.0" />
+                                 </HBox.margin>
+                              </Label>
+                                       <TextField fx:id="sampleText" onKeyPressed="#onKeyPressed" />
+                                   </children>
+                               </HBox>
+                           </children>
+                     <padding>
+                        <Insets bottom="15.0" top="15.0" />
+                     </padding>
+                       </VBox>
+                   </children>
+                   <BorderPane.margin>
+                       <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                   </BorderPane.margin>
+               </HBox>
+           </children>
         </VBox>
     </bottom>
 </BorderPane>
