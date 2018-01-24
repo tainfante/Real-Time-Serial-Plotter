@@ -72,12 +72,12 @@
                   </Button>
                </children>
             </HBox>
-            <RadioButton fx:id="asHexRadioButton" focusTraversable="false" mnemonicParsing="false" text="as hex">
+            <RadioButton fx:id="asDecimalRadioButton" focusTraversable="false" mnemonicParsing="false" text="as decimal">
                <font>
                   <Font size="11.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="asDecimalRadioButton" focusTraversable="false" mnemonicParsing="false" text="as decimal">
+            <RadioButton fx:id="asHexRadioButton" focusTraversable="false" mnemonicParsing="false" text="as hex">
                <font>
                   <Font size="11.0" />
                </font>

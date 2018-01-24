@@ -24,8 +24,9 @@ public class CaptureController implements Initializable
     public Button startAppendButton;
     public Button stopButton;
 
-    public RadioButton asHexRadioButton;
     public RadioButton asDecimalRadioButton;
+    public RadioButton asHexRadioButton;
+    private ToggleGroup formatOfValuesGroup;
 
     public CheckBox channel1CheckBox;
     public CheckBox channel2CheckBox;
@@ -38,7 +39,7 @@ public class CaptureController implements Initializable
 
     private ArrayList<CheckBox> channelCheckBoxes;
 
-    private volatile boolean isActiveExport;
+    public static volatile boolean isActiveExport;
 
     private File file;
 
@@ -55,6 +56,14 @@ public class CaptureController implements Initializable
         channelCheckBoxes.add(channel6CheckBox);
         channelCheckBoxes.add(channel7CheckBox);
         channelCheckBoxes.add(channel8CheckBox);
+
+        formatOfValuesGroup = new ToggleGroup();
+        asDecimalRadioButton.setToggleGroup(formatOfValuesGroup);
+        asDecimalRadioButton.setSelected(true);
+        asDecimalRadioButton.setUserData("decimal");
+
+        asHexRadioButton.setToggleGroup(formatOfValuesGroup);
+        asHexRadioButton.setUserData("hex");
     }
 
     public void chooseFileClick()
@@ -83,11 +92,15 @@ public class CaptureController implements Initializable
                 PortReader.getInstance().setExportBufferEnabled(true);
                 isActiveExport = true;
 
+                Log.getInstance().log("Capturing is started.");
+
                 stopButton.setDisable(false);
                 //startAppendButton.setDisable(true);
                 startOverwriteButton.setDisable(true);
+                asHexRadioButton.setDisable(true);
+                asDecimalRadioButton.setDisable(true);
 
-                new Thread(() ->
+                Thread capturingThread = new Thread(() ->
                 {
                     int i;
 
@@ -120,7 +133,7 @@ public class CaptureController implements Initializable
                                     checks[i] = channelCheckBoxes.get(i).isSelected();
                                 }
 
-                                printWriter.println(frame.toString(checks));
+                                printWriter.println(frame.toString(checks, formatOfValuesGroup.getSelectedToggle().getUserData().toString()));
                             }
                         }
 
@@ -131,8 +144,9 @@ public class CaptureController implements Initializable
                         e.printStackTrace();
                     }
 
-                }).start();
-
+                });
+                capturingThread.setName("Capturing Thread");
+                capturingThread.start();
             }
             else
             {
@@ -155,7 +169,6 @@ public class CaptureController implements Initializable
             stopButton.setDisable(false);
             startAppendButton.setDisable(true);
             startOverwriteButton.setDisable(true);
-
         }
         else
         {
@@ -178,6 +191,10 @@ public class CaptureController implements Initializable
             Platform.runLater(() -> channelCheckBoxes.get(finalI).setDisable(false));
         }
 
+        asHexRadioButton.setDisable(false);
+        asDecimalRadioButton.setDisable(false);
+
+        Log.getInstance().log("Capturing is stopped.");
     }
 
     private void showInformationAlert(String information)
