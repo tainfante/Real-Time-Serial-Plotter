@@ -155,7 +155,7 @@ public class CaptureController implements Initializable
         }
         else
         {
-            showErrorAlert("Podana ścieżka jest niepoprawna!");
+            showErrorAlert("Given path is wrong!");
         }
     }
 

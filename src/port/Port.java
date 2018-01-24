@@ -100,9 +100,6 @@ public class Port
         }
         catch (Throwable thwble)
         {
-            Log.getInstance().log("An attempt to open the port was unsuccessful.");
-            thwble.printStackTrace();
-
             return false;
         }
     }

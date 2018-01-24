@@ -1,5 +1,6 @@
 package mainwindow;
 
+import javafx.scene.control.Alert;
 import plot.Plot;
 import port.PortReader;
 import javafx.fxml.FXML;
@@ -114,6 +115,17 @@ public class PortController implements Initializable
 
                     PortReader.getInstance().startReading();
                     Plot.getInstance().startPlotting();
+                }
+                else
+                {
+                    Log.getInstance().log("An attempt to open the port was unsuccessful.");
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+
+                    alert.setTitle("Real Time Serial Plotter");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Port is already in use. Cannot open.");
+                    alert.showAndWait();
                 }
             }
         }
