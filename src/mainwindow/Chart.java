@@ -48,7 +48,7 @@ public class Chart implements Initializable {
     @FXML
     public CheckBox checkEight;
     @FXML
-    private ComboBox<String> timeBox;
+    private TextField sampleText;
     @FXML
     private ComboBox<String> variableBox;
     @FXML
@@ -75,9 +75,9 @@ public class Chart implements Initializable {
         checkEight.setSelected(true);
         lchart.getData().addAll(series1,series2,series3,series4,series5,series6,series7,series8);
         lchart.setLegendVisible(false);
-        timeBox.getItems().addAll("20", "500", "5000","10000");
         variableBox.getItems().addAll("8 bits", "16 bits", "32 bits");
         yAxis.setForceZeroInRange(false);
+        xAxis.setAutoRanging(true);
 
         //Styling chart with colors//
 
@@ -344,62 +344,63 @@ public class Chart implements Initializable {
         }
     }
 
-    public void onChooseSamples(ActionEvent actionEvent) {
-        updateXAxis();
+    public void updateXAxis() {
+        int samples;
+        if(null==sampleText){
+            samples=300;
+        }
+        else{
+            selectedTime = sampleText.getText();
+            samples = Integer.parseInt(selectedTime);
+        }
+        if (series1.getData().sorted().size() > samples) {
+            try {
+                series1.getData().remove(0, (series1.getData().size() - samples));
+                series2.getData().remove(0, (series2.getData().size() - samples));
+                series3.getData().remove(0, (series3.getData().size() - samples));
+                series4.getData().remove(0, (series4.getData().size() - samples));
+                series5.getData().remove(0, (series5.getData().size() - samples));
+                series6.getData().remove(0, (series6.getData().size() - samples));
+                series7.getData().remove(0, (series7.getData().size() - samples));
+                series8.getData().remove(0, (series8.getData().size() - samples));
+            }
+            catch(NullPointerException nul){
+                System.out.println("No such data in the Series");
+            }
+        }
     }
 
-    public void updateXAxis(){
-        try {
-            selectedTime = timeBox.getSelectionModel().getSelectedItem();
-            if (selectedTime.equals("20")) {
-                if (series1.getData().sorted().size() > 20) {
-                    series1.getData().remove(0, (series1.getData().size() - 20));
-                    series2.getData().remove(0, (series2.getData().size() - 20));
-                    series3.getData().remove(0, (series3.getData().size() - 20));
-                    series4.getData().remove(0, (series4.getData().size() - 20));
-                    series5.getData().remove(0, (series5.getData().size() - 20));
-                    series6.getData().remove(0, (series6.getData().size() - 20));
-                    series7.getData().remove(0, (series7.getData().size() - 20));
-                    series8.getData().remove(0, (series8.getData().size() - 20));
-                }
-            } else if (selectedTime.equals("5000")) {
-                if (series1.getData().sorted().size() > 5000) {
-                    series1.getData().remove(0, (series1.getData().size() - 5000));
-                    series2.getData().remove(0, (series2.getData().size() - 5000));
-                    series3.getData().remove(0, (series3.getData().size() - 5000));
-                    series4.getData().remove(0, (series4.getData().size() - 5000));
-                    series5.getData().remove(0, (series5.getData().size() - 5000));
-                    series6.getData().remove(0, (series6.getData().size() - 5000));
-                    series7.getData().remove(0, (series7.getData().size() - 5000));
-                    series8.getData().remove(0, (series8.getData().size() - 5000));
-                }
-            } else if (selectedTime.equals("10000")) {
-                if (series1.getData().sorted().size() > 10000) {
-                    series1.getData().remove(0, (series1.getData().size() - 10000));
-                    series2.getData().remove(0, (series2.getData().size() - 10000));
-                    series3.getData().remove(0, (series3.getData().size() - 10000));
-                    series4.getData().remove(0, (series4.getData().size() - 10000));
-                    series5.getData().remove(0, (series5.getData().size() - 10000));
-                    series6.getData().remove(0, (series6.getData().size() - 10000));
-                    series7.getData().remove(0, (series7.getData().size() - 10000));
-                    series8.getData().remove(0, (series8.getData().size() - 10000));
-                }
-            }
-            else if (selectedTime.equals("500")) {
-                if (series1.getData().sorted().size() > 500) {
-                    series1.getData().remove(0, (series1.getData().size() - 500));
-                    series2.getData().remove(0, (series2.getData().size() - 500));
-                    series3.getData().remove(0, (series3.getData().size() - 500));
-                    series4.getData().remove(0, (series4.getData().size() - 500));
-                    series5.getData().remove(0, (series5.getData().size() - 500));
-                    series6.getData().remove(0, (series6.getData().size() - 500));
-                    series7.getData().remove(0, (series7.getData().size() - 500));
-                    series8.getData().remove(0, (series8.getData().size() - 500));
-                }
-            }
+    public int numberOfSamples(){
+        int samples;
+        if(null==sampleText){
+            samples=200;
         }
-        catch (NullPointerException exe){
+        else{
+            selectedTime = sampleText.getText();
+            samples = Integer.parseInt(selectedTime);
+        }
+        return samples;
+    }
 
+    public boolean update(){
+        int samples;
+        if(null==sampleText){
+            samples=200;
         }
+        else{
+            selectedTime = sampleText.getText();
+            samples = Integer.parseInt(selectedTime);
+        }
+        if (series1.getData().sorted().size() > samples) {
+            return true;
+        }
+        else{
+            return false;
+        }
+
+    }
+
+    public void onEnter(ActionEvent actionEvent) {
+        updateXAxis();
     }
 }
