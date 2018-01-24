@@ -60,7 +60,7 @@ public class Chart implements Initializable {
     @FXML
     private TextField maxText;
 
-    private int samples=200;
+    private int samples = 200;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -83,7 +83,7 @@ public class Chart implements Initializable {
         xAxis.setAutoRanging(true);
         xAxis.setTickLabelsVisible(false);
 
-        //Styling chart with colors//
+        //Styling chart with colors and styles//
 
         Node line1 = series1.getNode().lookup(".chart-series-line");
         Node line2 = series2.getNode().lookup(".chart-series-line");
@@ -144,6 +144,15 @@ public class Chart implements Initializable {
         line6.setStyle("-fx-stroke: rgba(" + rgb6 + ", 1.0);");
         line7.setStyle("-fx-stroke: rgba(" + rgb7 + ", 1.0);");
         line8.setStyle("-fx-stroke: rgba(" + rgb8 + ", 1.0);");
+
+        line1.setStyle("-fx-stroke-width: 1px;");
+        line2.setStyle("-fx-stroke-width: 1px;");
+        line3.setStyle("-fx-stroke-width: 1px;");
+        line4.setStyle("-fx-stroke-width: 1px;");
+        line5.setStyle("-fx-stroke-width: 1px;");
+        line6.setStyle("-fx-stroke-width: 1px;");
+        line7.setStyle("-fx-stroke-width: 1px;");
+        line8.setStyle("-fx-stroke-width: 1px;");
 
         checkOne.setStyle("-fx-text-fill:rgb(" + rgb1 + ");");
         checkTwo.setStyle("-fx-text-fill:rgb(" + rgb2 + ");");
@@ -214,7 +223,7 @@ public class Chart implements Initializable {
         }
     }
 
-    void channelUpdate(int channelNumber, String name, Color color) {
+    void channelUpdate(int channelNumber, String name, String units, Color color) {
 
         String rgb = String.format("%d, %d, %d",
                 (int) (color.getRed() * 255),
@@ -224,52 +233,147 @@ public class Chart implements Initializable {
         if (null != ChartINSTANCE) {
             switch (channelNumber) {
                 case 1:
-                    checkOne.setText(name);
+                    checkOne.setText(name + units);
+                    checkOne.setStyle("-fx-text-fill:rgb(" + rgb + ");");
+                    Node line1 = series1.getNode().lookup(".chart-series-line");
+                    line1.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+                    line1.setStyle("-fx-stroke-width: 1px;");
+                    break;
+                case 2:
+                    checkTwo.setText(name + units);
+                    checkTwo.setStyle("-fx-text-fill:rgb(" + rgb + ");");
+                    Node line2 = series2.getNode().lookup(".chart-series-line");
+                    line2.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+                    line2.setStyle("-fx-stroke-width: 1px;");
+                    break;
+                case 3:
+                    checkThree.setText(name + units);
+                    checkThree.setStyle("-fx-text-fill:rgb(" + rgb + ");");
+                    Node line3 = series3.getNode().lookup(".chart-series-line");
+                    line3.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+                    line3.setStyle("-fx-stroke-width: 1px;");
+                    break;
+                case 4:
+                    checkFour.setText(name + units);
+                    checkFour.setStyle("-fx-text-fill:rgb(" + rgb + ");");
+                    Node line4 = series4.getNode().lookup(".chart-series-line");
+                    line4.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+                    line4.setStyle("-fx-stroke-width: 1px;");
+                    break;
+                case 5:
+                    checkFive.setText(name + units);
+                    checkFive.setStyle("-fx-text-fill:rgb(" + rgb + ");");
+                    Node line5 = series5.getNode().lookup(".chart-series-line");
+                    line5.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+                    line5.setStyle("-fx-stroke-width: 1px;");
+                    break;
+                case 6:
+                    checkSix.setText(name + units);
+                    checkSix.setStyle("-fx-text-fill:rgb(" + rgb + ");");
+                    Node line6 = series6.getNode().lookup(".chart-series-line");
+                    line6.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+                    line6.setStyle("-fx-stroke-width: 1px;");
+                    break;
+                case 7:
+                    checkSeven.setText(name + units);
+                    checkSeven.setStyle("-fx-text-fill:rgb(" + rgb + ");");
+                    Node line7 = series7.getNode().lookup(".chart-series-line");
+                    line7.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+                    line7.setStyle("-fx-stroke-width: 1px;");
+                    break;
+                case 8:
+                    checkEight.setText(name + units);
+                    checkEight.setStyle("-fx-text-fill:rgb(" + rgb + ");");
+                    Node line8 = series8.getNode().lookup(".chart-series-line");
+                    line8.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+                    line8.setStyle("-fx-stroke-width: 1px;");
+                    break;
+            }
+        }
+
+    }
+
+    void channelUpdateColor(int channelNumber, Color color) {
+
+        String rgb = String.format("%d, %d, %d",
+                (int) (color.getRed() * 255),
+                (int) (color.getGreen() * 255),
+                (int) (color.getBlue() * 255));
+
+        if (null != ChartINSTANCE) {
+            switch (channelNumber) {
+                case 1:
                     checkOne.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line1 = series1.getNode().lookup(".chart-series-line");
                     line1.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 2:
-                    checkTwo.setText(name);
                     checkTwo.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line2 = series2.getNode().lookup(".chart-series-line");
                     line2.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 3:
-                    checkThree.setText(name);
                     checkThree.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line3 = series3.getNode().lookup(".chart-series-line");
                     line3.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 4:
-                    checkFour.setText(name);
                     checkFour.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line4 = series4.getNode().lookup(".chart-series-line");
                     line4.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 5:
-                    checkFive.setText(name);
                     checkFive.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line5 = series5.getNode().lookup(".chart-series-line");
                     line5.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 6:
-                    checkSix.setText(name);
                     checkSix.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line6 = series6.getNode().lookup(".chart-series-line");
                     line6.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 7:
-                    checkSeven.setText(name);
                     checkSeven.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line7 = series7.getNode().lookup(".chart-series-line");
                     line7.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
                     break;
                 case 8:
-                    checkEight.setText(name);
                     checkEight.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line8 = series8.getNode().lookup(".chart-series-line");
                     line8.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);");
+                    break;
+            }
+        }
+
+    }
+
+    void channelUpdateWithoutColor(int channelNumber, String name, String units) {
+
+        if (null != ChartINSTANCE) {
+            switch (channelNumber) {
+                case 1:
+                    checkOne.setText(name + units);
+                    break;
+                case 2:
+                    checkTwo.setText(name + units);
+                    break;
+                case 3:
+                    checkThree.setText(name + units);
+                    break;
+                case 4:
+                    checkFour.setText(name + units);
+                    break;
+                case 5:
+                    checkFive.setText(name + units);
+                    break;
+                case 6:
+                    checkSix.setText(name + units);
+                    break;
+                case 7:
+                    checkSeven.setText(name + units);
+                    break;
+                case 8:
+                    checkEight.setText(name + units);
                     break;
             }
         }
@@ -282,7 +386,7 @@ public class Chart implements Initializable {
         } else {
             if (!lchart.getData().contains(series1)) {
                 lchart.getData().add(series1);
-                channelUpdate(1, checkOne.getText(), Color.RED);
+                channelUpdate(1, checkOne.getText(), "", Color.RED);
             }
         }
     }
@@ -293,7 +397,7 @@ public class Chart implements Initializable {
         } else {
             if (!lchart.getData().contains(series2)) {
                 lchart.getData().add(series2);
-                channelUpdate(2, checkTwo.getText(), Color.BLUE);
+                channelUpdate(2, checkTwo.getText(), "", Color.BLUE);
             }
         }
     }
@@ -304,7 +408,7 @@ public class Chart implements Initializable {
         } else {
             if (!lchart.getData().contains(series3)) {
                 lchart.getData().add(series3);
-                channelUpdate(3, checkThree.getText(), Color.BLACK);
+                channelUpdate(3, checkThree.getText(), "", Color.BLACK);
             }
         }
     }
@@ -315,7 +419,7 @@ public class Chart implements Initializable {
         } else {
             if (!lchart.getData().contains(series4)) {
                 lchart.getData().add(series4);
-                channelUpdate(4, checkFour.getText(), Color.GRAY);
+                channelUpdate(4, checkFour.getText(), "", Color.GRAY);
             }
         }
     }
@@ -326,7 +430,7 @@ public class Chart implements Initializable {
         } else {
             if (!lchart.getData().contains(series5)) {
                 lchart.getData().add(series5);
-                channelUpdate(5, checkFive.getText(), Color.GREEN);
+                channelUpdate(5, checkFive.getText(), "", Color.GREEN);
             }
         }
     }
@@ -337,7 +441,7 @@ public class Chart implements Initializable {
         } else {
             if (!lchart.getData().contains(series6)) {
                 lchart.getData().add(series6);
-                channelUpdate(6, checkSix.getText(), Color.DARKBLUE);
+                channelUpdate(6, checkSix.getText(), "", Color.DARKBLUE);
             }
         }
     }
@@ -348,7 +452,7 @@ public class Chart implements Initializable {
         } else {
             if (!lchart.getData().contains(series7)) {
                 lchart.getData().add(series7);
-                channelUpdate(7, checkSeven.getText(), Color.VIOLET);
+                channelUpdate(7, checkSeven.getText(), "", Color.VIOLET);
             }
         }
     }
@@ -359,56 +463,58 @@ public class Chart implements Initializable {
         } else {
             if (!lchart.getData().contains(series8)) {
                 lchart.getData().add(series8);
-                channelUpdate(8, checkEight.getText(), Color.ORANGE);
+                channelUpdate(8, checkEight.getText(), "", Color.ORANGE);
             }
         }
     }
 
-    public int numberOfSamples(){
+    public int numberOfSamples() {
         return samples;
     }
 
-    public boolean update(){
+    public boolean update() {
 
-        if (series1.getData().sorted().size() > samples) {
-            return true;
+        if (null != series1) {
+            return series1.getData().sorted().size() > samples;
         }
-        else{
-            return false;
-        }
+        else return false;
     }
 
     public void onKeyPressed(KeyEvent keyEvent) {
-        if(keyEvent.getCode() == KeyCode.ENTER){
+        if (keyEvent.getCode() == KeyCode.ENTER) {
             String selectedTime = sampleText.getText();
 
-            try{
+            try {
                 samples = Integer.parseInt(selectedTime);
-            }
-            catch(NumberFormatException num){
+            } catch (NumberFormatException num) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Wrong data type");
                 alert.setHeaderText("You have submitted wrong data");
                 alert.setContentText("Please, set some numbers");
                 alert.showAndWait();
-                samples=200;
+                samples = 200;
             }
 
-            if (series1.getData().sorted().size() > samples) {
-                try {
-                    series1.getData().remove(0, (series1.getData().size() - samples));
-                    series2.getData().remove(0, (series2.getData().size() - samples));
-                    series3.getData().remove(0, (series3.getData().size() - samples));
-                    series4.getData().remove(0, (series4.getData().size() - samples));
-                    series5.getData().remove(0, (series5.getData().size() - samples));
-                    series6.getData().remove(0, (series6.getData().size() - samples));
-                    series7.getData().remove(0, (series7.getData().size() - samples));
-                    series8.getData().remove(0, (series8.getData().size() - samples));
-                }
-                catch (NullPointerException nul) {
-                    System.out.println("No such data in the Series");
+            if (null != series1) {
+                if (series1.getData().sorted().size() > samples) {
+                    try {
+                        if (null != series1) series1.getData().remove(0, (series1.getData().size() - samples));
+                        if (null != series2) series2.getData().remove(0, (series2.getData().size() - samples));
+                        if (null != series3) series3.getData().remove(0, (series3.getData().size() - samples));
+                        if (null != series4) series4.getData().remove(0, (series4.getData().size() - samples));
+                        if (null != series5) series5.getData().remove(0, (series5.getData().size() - samples));
+                        if (null != series6) series6.getData().remove(0, (series6.getData().size() - samples));
+                        if (null != series7) series7.getData().remove(0, (series7.getData().size() - samples));
+                        if (null != series8) series8.getData().remove(0, (series8.getData().size() - samples));
+                    } catch (NullPointerException nul) {
+                        System.out.println("No such data in the Series");
+                    }
                 }
             }
         }
     }
 }
+
+
+
+
