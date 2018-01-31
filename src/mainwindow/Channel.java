@@ -46,35 +46,44 @@ public class Channel implements Initializable{
     public void onNameKeyPressed(KeyEvent keyEvent) {
         if(keyEvent.getCode() == KeyCode.ENTER){
             try{
-                name=nameText.getText();
-                channel=channelBox.getSelectionModel().getSelectedItem();
-                channel=channelBox.getSelectionModel().getSelectedItem();
-                switch (channel) {
-                    case "Channel 1":
-                        Chart.getInstance().channelUpdateWithoutColor(1, name, units);
-                        break;
-                    case "Channel 2":
-                        Chart.getInstance().channelUpdateWithoutColor(2, name, units);
-                        break;
-                    case "Channel 3":
-                        Chart.getInstance().channelUpdateWithoutColor(3, name,units);
-                        break;
-                    case "Channel 4":
-                        Chart.getInstance().channelUpdateWithoutColor(4, name,units);
-                        break;
-                    case "Channel 5":
-                        Chart.getInstance().channelUpdateWithoutColor(5, name,units);
-                        break;
-                    case "Channel 6":
-                        Chart.getInstance().channelUpdateWithoutColor(6, name ,units);
-                        break;
-                    case "Channel 7":
-                        Chart.getInstance().channelUpdateWithoutColor(7, name,units);
-                        break;
-                    case "Channel 8":
-                        Chart.getInstance().channelUpdateWithoutColor(8, name,units);
-                        break;
+                if(!nameText.getText().isEmpty()){
+                    name=nameText.getText();
+                    channel=channelBox.getSelectionModel().getSelectedItem();
+                    if(!unitText.getText().isEmpty()){
+                        units="["+unitText.getText()+"]";
+                    }
+                    else{
+                        units="";
+                    }
+
+                    switch (channel) {
+                        case "Channel 1":
+                            Chart.getInstance().channelUpdateWithoutColor(1, name, units);
+                            break;
+                        case "Channel 2":
+                            Chart.getInstance().channelUpdateWithoutColor(2, name, units);
+                            break;
+                        case "Channel 3":
+                            Chart.getInstance().channelUpdateWithoutColor(3, name,units);
+                            break;
+                        case "Channel 4":
+                            Chart.getInstance().channelUpdateWithoutColor(4, name,units);
+                            break;
+                        case "Channel 5":
+                            Chart.getInstance().channelUpdateWithoutColor(5, name,units);
+                            break;
+                        case "Channel 6":
+                            Chart.getInstance().channelUpdateWithoutColor(6, name ,units);
+                            break;
+                        case "Channel 7":
+                            Chart.getInstance().channelUpdateWithoutColor(7, name,units);
+                            break;
+                        case "Channel 8":
+                            Chart.getInstance().channelUpdateWithoutColor(8, name,units);
+                            break;
+                    }
                 }
+
             }
             catch(NullPointerException exe){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -91,6 +100,12 @@ public class Channel implements Initializable{
             try{
                 if(!unitText.getText().isEmpty()){
                     units="["+unitText.getText()+"]";
+                    if(!nameText.getText().isEmpty()){
+                        name=nameText.getText();
+                    }
+                    else{
+                        name="";
+                    }
                 }
                 channel=channelBox.getSelectionModel().getSelectedItem();
                 switch (channel) {

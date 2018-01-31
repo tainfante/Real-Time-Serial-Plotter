@@ -460,7 +460,7 @@ public class Chart implements Initializable {
 
     public boolean update() {
 
-        if (null != series1) {
+        if (null != series1 && series1.getData().size()>samples) {
             return series1.getData().size() > samples;
         }
         else return false;

@@ -170,7 +170,7 @@ public class Plot {
                                           break;
                                       case 4:
                                           if (null != series5.getData())
-                                              if (series5.getData().get(0) != null) {
+                                              if (series5.getData().get(0) != null ) {
                                                   series5.getData().remove(0, removeData);
                                               }
                                           break;
