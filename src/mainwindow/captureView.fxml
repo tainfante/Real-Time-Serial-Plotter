@@ -33,7 +33,7 @@
                         <Font size="11.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="filePathTextField" focusTraversable="false" minHeight="20.0" prefHeight="10.0" prefWidth="268.0" text="C:\captureOfData.txt">
+                  <TextField fx:id="filePathTextField" editable="false" focusTraversable="false" minHeight="20.0" prefHeight="10.0" prefWidth="268.0" text="C:\captureOfData.txt">
                      <HBox.margin>
                         <Insets left="5.0" right="5.0" />
                      </HBox.margin>

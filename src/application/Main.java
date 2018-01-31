@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import mainwindow.CaptureController;
 import plot.Plot;
@@ -21,6 +22,9 @@ public class Main extends Application
         primaryStage.setScene(new Scene(root, 640, 480));
         primaryStage.setMinHeight(450.0);
         primaryStage.setMinWidth(620.0);
+
+        Image applicationIcon = new Image(getClass().getResourceAsStream("icon.png"));
+        primaryStage.getIcons().add(applicationIcon);
 
         primaryStage.setOnCloseRequest(event ->
         {
