@@ -85,7 +85,7 @@ public class CaptureController implements Initializable
     {
         file = new File(filePathTextField.getText());
 
-        if(file.exists())
+        if(file.getPath().substring(file.getPath().length() - 3, file.getPath().length()).equals("txt"))
         {
             if(PortReader.getInstance().isOpen())
             {
