@@ -1,9 +1,7 @@
 package mainwindow;
 
 import classes.DateAxis;
-import classes.Frame;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -12,9 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-import plot.Plot;
 import java.net.URL;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -195,7 +191,7 @@ public class Chart implements Initializable {
 
     }
 
-    public void onChooseVariable(ActionEvent actionEvent) {
+    public void onChooseVariable() {
         String variableType = variableBox.getSelectionModel().getSelectedItem();
         if (variableType.equals("8 bits")) {
             yAxis.setAutoRanging(false);
@@ -217,7 +213,7 @@ public class Chart implements Initializable {
         }
     }
 
-    void channelUpdate(int channelNumber, String name, String units, Color color) {
+    private void channelUpdate(int channelNumber, String name, String units, Color color) {
 
         String rgb = String.format("%d, %d, %d",
                 (int) (color.getRed() * 255),
