@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
@@ -72,12 +71,12 @@
                   </Button>
                </children>
             </HBox>
-            <RadioButton fx:id="asDecimalRadioButton" focusTraversable="false" mnemonicParsing="false" text="as decimal">
+            <RadioButton fx:id="asDecimalRadioButton" focusTraversable="false" mnemonicParsing="false" text="as decimal" selected="true" userData="decimal">
                <font>
                   <Font size="11.0" />
                </font>
             </RadioButton>
-            <RadioButton fx:id="asHexRadioButton" focusTraversable="false" mnemonicParsing="false" text="as hex">
+            <RadioButton fx:id="asHexRadioButton" focusTraversable="false" mnemonicParsing="false" text="as hex" userData="hex">
                <font>
                   <Font size="11.0" />
                </font>

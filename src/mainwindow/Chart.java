@@ -1,7 +1,5 @@
 package mainwindow;
 
-import classes.DateAxis;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -17,6 +15,7 @@ import java.util.ResourceBundle;
 public class Chart implements Initializable {
 
     private static volatile Chart ChartINSTANCE;
+
     @FXML
     LineChart<Date, Number> lchart;
     public static XYChart.Series<Date, Number> series1 = new XYChart.Series<>();
@@ -27,8 +26,7 @@ public class Chart implements Initializable {
     public static XYChart.Series<Date, Number> series6 = new XYChart.Series<>();
     public static XYChart.Series<Date, Number> series7 = new XYChart.Series<>();
     public static XYChart.Series<Date, Number> series8 = new XYChart.Series<>();
-    @FXML
-    private DateAxis xAxis = new DateAxis();
+
     @FXML
     NumberAxis yAxis = new NumberAxis();
     @FXML
@@ -64,21 +62,8 @@ public class Chart implements Initializable {
         lchart.setTitle("Serial Data");
         lchart.getStyleClass().add("title");
         lchart.setCreateSymbols(false);
-        checkOne.setSelected(true);
-        checkTwo.setSelected(true);
-        checkThree.setSelected(true);
-        checkFour.setSelected(true);
-        checkFive.setSelected(true);
-        checkSix.setSelected(true);
-        checkSeven.setSelected(true);
-        checkEight.setSelected(true);
         lchart.getData().addAll(series1, series2, series3, series4, series5, series6, series7, series8);
-        lchart.setLegendVisible(false);
         variableBox.getItems().addAll("8 bits", "16 bits", "32 bits");
-        yAxis.setForceZeroInRange(false);
-        xAxis.setAutoRanging(true);
-        xAxis.setTickLabelsVisible(false);
-        lchart.setAnimated(false);
 
         //Styling chart with colors and styles//
 
@@ -163,7 +148,7 @@ public class Chart implements Initializable {
         return ChartINSTANCE;
     }
 
-    public void onSubmitChanges(ActionEvent actionEvent) {
+    public void onSubmitChanges() {
         String MIN = minText.getText();
         String MAX = maxText.getText();
         double min;
@@ -213,7 +198,7 @@ public class Chart implements Initializable {
         }
     }
 
-    private void channelUpdate(int channelNumber, String name, String units, Color color) {
+    private void channelUpdate(int channelNumber, String name, Color color) {
 
         String rgb = String.format("%d, %d, %d",
                 (int) (color.getRed() * 255),
@@ -223,49 +208,49 @@ public class Chart implements Initializable {
         if (null != ChartINSTANCE) {
             switch (channelNumber) {
                 case 1:
-                    checkOne.setText(name + units);
+                    checkOne.setText(name);
                     checkOne.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line1 = series1.getNode().lookup(".chart-series-line");
                     line1.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);"+"-fx-stroke-width: 1px;");
                     break;
                 case 2:
-                    checkTwo.setText(name + units);
+                    checkTwo.setText(name);
                     checkTwo.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line2 = series2.getNode().lookup(".chart-series-line");
                     line2.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);"+"-fx-stroke-width: 1px;");
                     break;
                 case 3:
-                    checkThree.setText(name + units);
+                    checkThree.setText(name);
                     checkThree.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line3 = series3.getNode().lookup(".chart-series-line");
                     line3.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);"+"-fx-stroke-width: 1px;");
                     break;
                 case 4:
-                    checkFour.setText(name + units);
+                    checkFour.setText(name);
                     checkFour.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line4 = series4.getNode().lookup(".chart-series-line");
                     line4.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);"+"-fx-stroke-width: 1px;");
                     break;
                 case 5:
-                    checkFive.setText(name + units);
+                    checkFive.setText(name);
                     checkFive.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line5 = series5.getNode().lookup(".chart-series-line");
                     line5.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);"+"-fx-stroke-width: 1px;");
                     break;
                 case 6:
-                    checkSix.setText(name + units);
+                    checkSix.setText(name);
                     checkSix.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line6 = series6.getNode().lookup(".chart-series-line");
                     line6.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);"+"-fx-stroke-width: 1px;");
                     break;
                 case 7:
-                    checkSeven.setText(name + units);
+                    checkSeven.setText(name);
                     checkSeven.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line7 = series7.getNode().lookup(".chart-series-line");
                     line7.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);"+"-fx-stroke-width: 1px;");
                     break;
                 case 8:
-                    checkEight.setText(name + units);
+                    checkEight.setText(name);
                     checkEight.setStyle("-fx-text-fill:rgb(" + rgb + ");");
                     Node line8 = series8.getNode().lookup(".chart-series-line");
                     line8.setStyle("-fx-stroke: rgba(" + rgb + ", 1.0);"+"-fx-stroke-width: 1px;");
@@ -274,7 +259,7 @@ public class Chart implements Initializable {
         }
     }
 
-    void channelUpdateColor(int channelNumber, Color color) {
+    void channelUpdate(int channelNumber, Color color) {
 
         String rgb = String.format("%d, %d, %d",
                 (int) (color.getRed() * 255),
@@ -328,7 +313,7 @@ public class Chart implements Initializable {
 
     }
 
-    void channelUpdateWithoutColor(int channelNumber, String name, String units) {
+    void channelUpdate(int channelNumber, String name, String units) {
 
         if (null != ChartINSTANCE) {
             switch (channelNumber) {
@@ -361,91 +346,90 @@ public class Chart implements Initializable {
 
     }
 
-    public void onCheck1(ActionEvent actionEvent) {
+    public void onCheck1() {
         if (!checkOne.isSelected()) {
             lchart.getData().remove(series1);
         } else {
             if (!lchart.getData().contains(series1)) {
                 lchart.getData().add(series1);
-                channelUpdate(1, checkOne.getText(), "", Color.RED);
+                channelUpdate(1, checkOne.getText(), Color.RED);
             }
         }
     }
 
-    public void onCheck2(ActionEvent actionEvent) {
+    public void onCheck2() {
         if (!checkTwo.isSelected()) {
             lchart.getData().remove(series2);
         } else {
             if (!lchart.getData().contains(series2)) {
                     lchart.getData().add(series2);
-                    channelUpdate(2, checkTwo.getText(), "", Color.BLUE);
-
+                    channelUpdate(2, checkTwo.getText(), Color.BLUE);
             }
         }
     }
 
-    public void onCheck3(ActionEvent actionEvent) {
+    public void onCheck3() {
         if (!checkThree.isSelected()) {
             lchart.getData().remove(series3);
         } else {
             if (!lchart.getData().contains(series3)) {
                 lchart.getData().add(series3);
-                channelUpdate(3, checkThree.getText(), "", Color.BLACK);
+                channelUpdate(3, checkThree.getText(), Color.BLACK);
             }
         }
     }
 
-    public void onCheck4(ActionEvent actionEvent) {
+    public void onCheck4() {
         if (!checkFour.isSelected()) {
             lchart.getData().remove(series4);
         } else {
             if (!lchart.getData().contains(series4)) {
                 lchart.getData().add(series4);
-                channelUpdate(4, checkFour.getText(), "", Color.GRAY);
+                channelUpdate(4, checkFour.getText(), Color.GRAY);
             }
         }
     }
 
-    public void onCheck5(ActionEvent actionEvent) {
+    public void onCheck5() {
         if (!checkFive.isSelected()) {
             lchart.getData().remove(series5);
         } else {
             if (!lchart.getData().contains(series5)) {
                 lchart.getData().add(series5);
-                channelUpdate(5, checkFive.getText(), "", Color.GREEN);
+                channelUpdate(5, checkFive.getText(), Color.GREEN);
             }
         }
     }
 
-    public void onCheck6(ActionEvent actionEvent) {
+    public void onCheck6() {
         if (!checkSix.isSelected()) {
             lchart.getData().remove(series6);
         } else {
             if (!lchart.getData().contains(series6)) {
                 lchart.getData().add(series6);
-                channelUpdate(6, checkSix.getText(), "", Color.DARKBLUE);
+                channelUpdate(6, checkSix.getText(), Color.DARKBLUE);
             }
         }
     }
 
-    public void onCheck7(ActionEvent actionEvent) {
+    public void onCheck7() {
         if (!checkSeven.isSelected()) {
             lchart.getData().remove(series7);
         } else {
             if (!lchart.getData().contains(series7)) {
                 lchart.getData().add(series7);
-                channelUpdate(7, checkSeven.getText(), "", Color.VIOLET);
+                channelUpdate(7, checkSeven.getText(), Color.VIOLET);
             }
         }
     }
 
-    public void onCheck8(ActionEvent actionEvent) {
+    public void onCheck8() {
         if (!checkEight.isSelected()) {
             lchart.getData().remove(series8);
         } else {
             if (!lchart.getData().contains(series8)) {
                 lchart.getData().add(series8);
-                channelUpdate(8, checkEight.getText(), "", Color.ORANGE);
+                channelUpdate(8, checkEight.getText(), Color.ORANGE);
             }
         }
     }
@@ -454,12 +438,9 @@ public class Chart implements Initializable {
         return samples;
     }
 
-    public boolean update() {
-
-        if (null != series1) {
-            return series1.getData().size() > samples;
-        }
-        else return false;
+    public boolean update()
+    {
+        return null != series1 && series1.getData().size() > samples;
     }
 
     public void onKeyPressed(KeyEvent keyEvent) {

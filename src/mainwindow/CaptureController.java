@@ -59,11 +59,8 @@ public class CaptureController implements Initializable
 
         formatOfValuesGroup = new ToggleGroup();
         asDecimalRadioButton.setToggleGroup(formatOfValuesGroup);
-        asDecimalRadioButton.setSelected(true);
-        asDecimalRadioButton.setUserData("decimal");
 
         asHexRadioButton.setToggleGroup(formatOfValuesGroup);
-        asHexRadioButton.setUserData("hex");
     }
 
     public void chooseFileClick()

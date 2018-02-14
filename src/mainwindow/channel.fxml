@@ -1,20 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.Channel">
-        <children>
-            <TextField fx:id="nameText" layoutX="46.0" layoutY="118.0" onKeyPressed="#onNameKeyPressed" />
-            <TextField fx:id="unitText" layoutX="217.0" layoutY="118.0" onKeyPressed="#onUnitKeyPressed" />
-            <ColorPicker fx:id="colorPicker" layoutX="396.0" layoutY="118.0" onAction="#onPickColor" />
-            <ChoiceBox fx:id="channelBox" layoutX="45.0" layoutY="53.0" prefWidth="150.0" />
-            <Label layoutX="48.0" layoutY="26.0" prefHeight="17.0" prefWidth="149.0" text="Choose channel" />
-            <Label layoutX="45.0" layoutY="91.0" prefHeight="17.0" prefWidth="152.0" text="Set curve name" />
-            <Label layoutX="217.0" layoutY="91.0" prefHeight="17.0" prefWidth="151.0" text="Set units" />
-            <Label layoutX="396.0" layoutY="91.0" prefHeight="17.0" prefWidth="127.0" text="Set color" />
-        </children>
+
+        <TextField fx:id="nameText" layoutX="46.0" layoutY="118.0" onKeyPressed="#onNameKeyPressed" />
+        <TextField fx:id="unitText" layoutX="217.0" layoutY="118.0" onKeyPressed="#onUnitKeyPressed" />
+        <ColorPicker fx:id="colorPicker" layoutX="396.0" layoutY="118.0" onAction="#onPickColor" />
+        <ChoiceBox fx:id="channelBox" layoutX="45.0" layoutY="53.0" prefWidth="150.0" />
+        <Label layoutX="48.0" layoutY="26.0" prefHeight="17.0" prefWidth="149.0" text="Choose channel" />
+        <Label layoutX="45.0" layoutY="91.0" prefHeight="17.0" prefWidth="152.0" text="Set curve name" />
+        <Label layoutX="217.0" layoutY="91.0" prefHeight="17.0" prefWidth="151.0" text="Set units" />
+        <Label layoutX="396.0" layoutY="91.0" prefHeight="17.0" prefWidth="127.0" text="Set color" />
+
 </AnchorPane>

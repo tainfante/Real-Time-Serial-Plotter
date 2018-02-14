@@ -1,48 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
-<?import java.lang.*?>
-<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.chart.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import java.net.URL?>
 
 <?import classes.DateAxis?>
 <BorderPane minHeight="325.0" minWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.Chart">
     <center>
-            <LineChart fx:id="lchart" layoutY="37.0" prefHeight="226.0" prefWidth="455.0">
+            <LineChart fx:id="lchart" layoutY="37.0" prefHeight="226.0" prefWidth="455.0" animated="false" legendVisible="false">
 
                 <xAxis>
-                    <DateAxis fx:id="xAxis" />
+                    <DateAxis fx:id="xAxis" tickLabelsVisible="false"/>
                 </xAxis>
                 <yAxis>
-                    <NumberAxis fx:id="yAxis" side="LEFT" />
+                    <NumberAxis fx:id="yAxis" side="LEFT" forceZeroInRange="false"/>
                 </yAxis>
             </LineChart>
     </center>
     <right>
         <VBox spacing="10.0" BorderPane.alignment="CENTER">
-           <children>
-               <CheckBox fx:id="checkOne" layoutX="474.0" layoutY="87.0" mnemonicParsing="false" onAction="#onCheck1" text="Channel 1" />
-               <CheckBox fx:id="checkTwo" layoutX="474.0" layoutY="104.0" mnemonicParsing="false" onAction="#onCheck2" text="Channel 2" />
-               <CheckBox fx:id="checkThree" layoutX="474.0" layoutY="121.0" mnemonicParsing="false" onAction="#onCheck3" text="Channel 3" />
-               <CheckBox fx:id="checkFour" layoutX="474.0" layoutY="142.0" mnemonicParsing="false" onAction="#onCheck4" text="Channel 4" />
-               <CheckBox fx:id="checkFive" layoutX="474.0" layoutY="161.0" mnemonicParsing="false" onAction="#onCheck5" text="Channel 5" />
-               <CheckBox fx:id="checkSix" layoutX="474.0" layoutY="178.0" mnemonicParsing="false" onAction="#onCheck6" text="Channel 6" />
-               <CheckBox fx:id="checkSeven" layoutX="474.0" layoutY="53.0" mnemonicParsing="false" onAction="#onCheck7" text="Channel 7" />
-               <CheckBox fx:id="checkEight" layoutX="474.0" layoutY="70.0" mnemonicParsing="false" onAction="#onCheck8" text="Channel 8" />
-           </children>
+
+           <CheckBox fx:id="checkOne" layoutX="474.0" layoutY="87.0" mnemonicParsing="false" onAction="#onCheck1" text="Channel 1" selected="true" />
+           <CheckBox fx:id="checkTwo" layoutX="474.0" layoutY="104.0" mnemonicParsing="false" onAction="#onCheck2" text="Channel 2" selected="true" />
+           <CheckBox fx:id="checkThree" layoutX="474.0" layoutY="121.0" mnemonicParsing="false" onAction="#onCheck3" text="Channel 3" selected="true" />
+           <CheckBox fx:id="checkFour" layoutX="474.0" layoutY="142.0" mnemonicParsing="false" onAction="#onCheck4" text="Channel 4" selected="true" />
+           <CheckBox fx:id="checkFive" layoutX="474.0" layoutY="161.0" mnemonicParsing="false" onAction="#onCheck5" text="Channel 5" selected="true" />
+           <CheckBox fx:id="checkSix" layoutX="474.0" layoutY="178.0" mnemonicParsing="false" onAction="#onCheck6" text="Channel 6" selected="true" />
+           <CheckBox fx:id="checkSeven" layoutX="474.0" layoutY="53.0" mnemonicParsing="false" onAction="#onCheck7" text="Channel 7" selected="true" />
+           <CheckBox fx:id="checkEight" layoutX="474.0" layoutY="70.0" mnemonicParsing="false" onAction="#onCheck8" text="Channel 8" selected="true" />
+
             <BorderPane.margin>
                 <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
             </BorderPane.margin>
