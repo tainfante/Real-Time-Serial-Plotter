@@ -1,19 +1,11 @@
 package plot;
 
-import classes.DateAxis;
 import classes.Frame;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.scene.chart.XYChart;
 import mainwindow.Chart;
-import mainwindow.Log;
-import port.Port;
 import port.PortReader;
-
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 
 import static mainwindow.Chart.*;
 
@@ -24,15 +16,16 @@ public class Plot {
 
     private static volatile Plot PlotINSTANCE;
 
-    private int numberOfChannels=8;
+    private int numberOfChannels = 8;
 
     public void stopPlotting() {
         stop = true;
+        PlotINSTANCE = null;
 
     }
 
     public void setStopPlotting(boolean stop){
-        this.stop=stop;
+        this.stop = stop;
     }
 
 
@@ -49,7 +42,7 @@ public class Plot {
 
     public void startPlotting() {
 
-        Thread plottingThread=new Thread(new Runnable() {
+        Thread plottingThread = new Thread(new Runnable() {
             Frame receivedFrame;
             @Override
             public void run() {
@@ -98,10 +91,9 @@ public class Plot {
 
                         for (int i = 0; i < receivedFrame.getNumberOfChannels(); i++) {
                             final int data = receivedFrame.getChannelData().get(i);
-                            final int j = i;
                             final Frame frame = receivedFrame;
                             final XYChart.Data<Date, Number> chartdata=new XYChart.Data<>(frame.getTime(),data);
-                                switch (j) {
+                                switch (i) {
                                     case 0:
                                         if (null != series1.getData())
                                             Platform.runLater(() -> series1.getData().add(chartdata));

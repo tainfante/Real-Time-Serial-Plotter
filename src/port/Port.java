@@ -74,7 +74,6 @@ public class Port
             }
             catch (IOException e)
             {
-                System.out.println("The reading attempt failed due to the port being closed.");
                 return -1;
             }
         }
