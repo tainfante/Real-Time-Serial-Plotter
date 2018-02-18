@@ -1,5 +1,6 @@
 package mainwindow;
 
+import classes.AlertBox;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -9,7 +10,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -94,7 +94,7 @@ public class Channel implements Initializable{
         }
         else
         {
-            showChannelNoChosenError();
+            new AlertBox(Alert.AlertType.ERROR).showAlertBox("To submit channel settings you have to choose a channel");
         }
     }
 
@@ -131,17 +131,8 @@ public class Channel implements Initializable{
         }
         else
         {
-            showChannelNoChosenError();
+            new AlertBox(Alert.AlertType.ERROR).showAlertBox("To submit channel settings you have to choose a channel");
         }
-    }
-
-    private void showChannelNoChosenError()
-    {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Channel has not been chosen");
-        alert.setHeaderText("To submit channel settings you have to choose a channel");
-        alert.setContentText("Please, choose a channel");
-        alert.showAndWait();
     }
 
     private boolean isChannelChosen()

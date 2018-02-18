@@ -1,13 +1,13 @@
 package mainwindow;
 
 import application.Main;
+import classes.AlertBox;
 import classes.Frame;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.stage.FileChooser;
 import port.PortReader;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
@@ -97,62 +97,16 @@ public class CaptureController implements Initializable
                 asHexRadioButton.setDisable(true);
                 asDecimalRadioButton.setDisable(true);
 
-                Thread capturingThread = new Thread(() ->
-                {
-                    int i;
-
-                    boolean checks[] = new boolean[8];
-
-                    try
-                    {
-                        PrintWriter printWriter = new PrintWriter(file);
-
-                        while (isActiveExport)
-                        {
-                            if (!PortReader.getInstance().getExportFrameBuffer().isEmpty())
-                            {
-                                Frame frame = PortReader.getInstance().getExportFrameBuffer().take();
-
-                                for(i = 0; i < frame.getNumberOfChannels(); i++)
-                                {
-                                    int finalI = i;
-                                    Platform.runLater(() -> channelCheckBoxes.get(finalI).setDisable(false));
-                                }
-
-                                for(i = frame.getNumberOfChannels(); i < 8; i++)
-                                {
-                                    int finalI = i;
-                                    Platform.runLater(() -> channelCheckBoxes.get(finalI).setDisable(true));
-                                }
-
-                                for(i = 0; i < 8; i++)
-                                {
-                                    checks[i] = channelCheckBoxes.get(i).isSelected();
-                                }
-
-                                printWriter.println(frame.toString(checks, formatOfValuesGroup.getSelectedToggle().getUserData().toString()));
-                            }
-                        }
-
-                        printWriter.close();
-                    }
-                    catch (FileNotFoundException | InterruptedException e)
-                    {
-                        e.printStackTrace();
-                    }
-
-                });
-                capturingThread.setName("Capturing Thread");
-                capturingThread.start();
+                createAndStartCapturingThread();
             }
             else
             {
-                showInformationAlert("Port must be open to capture!");
+                new AlertBox(Alert.AlertType.INFORMATION).showAlertBox("Port must be open to capture!");
             }
         }
         else
         {
-            showErrorAlert("Given path is wrong!");
+            new AlertBox(Alert.AlertType.ERROR).showAlertBox("Given path is wrong!");
         }
     }
 
@@ -169,7 +123,7 @@ public class CaptureController implements Initializable
         }
         else
         {
-            showInformationAlert("Port must be open to capture!");
+            new AlertBox(Alert.AlertType.INFORMATION).showAlertBox("Port must be open to capture!");
         }
     }
 
@@ -181,36 +135,80 @@ public class CaptureController implements Initializable
         stopButton.setDisable(true);
         //startAppendButton.setDisable(false);
         startOverwriteButton.setDisable(false);
-
-        for(int i = 0; i < 8; i++)
-        {
-            int finalI = i;
-            Platform.runLater(() -> channelCheckBoxes.get(finalI).setDisable(false));
-        }
-
+        setAllChannelsDisable();
         asHexRadioButton.setDisable(false);
         asDecimalRadioButton.setDisable(false);
 
         Log.getInstance().log("Capturing is stopped.");
     }
 
-    private void showInformationAlert(String information)
+    private void createAndStartCapturingThread()
     {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        Thread capturingThread = new Thread(() ->
+        {
+            boolean checks[] = new boolean[8];
 
-        alert.setTitle("Real Time Serial Plotter");
-        alert.setHeaderText(null);
-        alert.setContentText(information);
-        alert.showAndWait();
+            try
+            {
+                PrintWriter printWriter = new PrintWriter(file);
+
+                while (isActiveExport)
+                {
+                    if (!PortReader.getInstance().getExportFrameBuffer().isEmpty())
+                    {
+                        Frame frame = PortReader.getInstance().getExportFrameBuffer().take();
+
+                        setAllAvailableChannelsEnable(frame.getNumberOfChannels());
+
+                        for(int i = 0; i < 8; i++)
+                        {
+                            checks[i] = channelCheckBoxes.get(i).isSelected();
+                        }
+
+                        printWriter.println(frame.toString(checks, getSelectedFormat()));
+                    }
+                }
+
+                printWriter.close();
+            }
+            catch (FileNotFoundException | InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+
+        });
+        capturingThread.setName("Capturing Thread");
+        capturingThread.start();
     }
 
-    private void showErrorAlert(String error)
+    private void setAllChannelsDisable()
     {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+        for(int i = 0; i < 8; i++)
+        {
+            int finalI = i;
+            Platform.runLater(() -> channelCheckBoxes.get(finalI).setDisable(false));
+        }
+    }
 
-        alert.setTitle("Real Time Serial Plotter");
-        alert.setHeaderText(null);
-        alert.setContentText(error);
-        alert.showAndWait();
+    private void setAllAvailableChannelsEnable(int nbrOfChannels)
+    {
+        for(int i = 0; i < 8; i++)
+        {
+            if( nbrOfChannels > i )
+            {
+                int finalI = i;
+                Platform.runLater(() -> channelCheckBoxes.get(finalI).setDisable(false));
+            }
+            else
+            {
+                int finalI = i;
+                Platform.runLater(() -> channelCheckBoxes.get(finalI).setDisable(true));
+            }
+        }
+    }
+
+    private String getSelectedFormat()
+    {
+        return formatOfValuesGroup.getSelectedToggle().getUserData().toString();
     }
 }

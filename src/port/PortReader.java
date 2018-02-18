@@ -194,10 +194,6 @@ public class PortReader extends Port
                             exportFrameBuffer.put(frame);
                         }
                     }
-                    else
-                    {
-                        //System.out.println("Read frame is a null.");
-                    }
                 }
                 catch (InterruptedException e)
                 {

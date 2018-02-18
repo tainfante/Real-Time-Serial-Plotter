@@ -1,6 +1,5 @@
 package port;
 
-import mainwindow.Log;
 import purejavacomm.CommPortIdentifier;
 import purejavacomm.SerialPort;
 import purejavacomm.UnsupportedCommOperationException;
@@ -14,7 +13,7 @@ public class Port
     private int baudRate = 1000000;
 
     volatile boolean stopReading = false;
-    volatile boolean isOpen = false;
+    private volatile boolean isOpen = false;
 
     public void setStopReading(boolean stopReading)
     {
@@ -83,13 +82,13 @@ public class Port
         }
     }
 
-    public boolean open(String serialPortName, int dataBits, int stopBits, int parityBits)
+    public boolean open(String serialPortName)
     {
         try
         {
             CommPortIdentifier portId = CommPortIdentifier.getPortIdentifier(serialPortName);
             port = (SerialPort) portId.open("RealTimeSerialPlotter", 1000);
-            port.setSerialPortParams(baudRate, dataBits, stopBits, parityBits);
+            port.setSerialPortParams(baudRate, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
 
             stopReading = false;
 

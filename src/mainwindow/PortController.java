@@ -1,5 +1,6 @@
 package mainwindow;
 
+import classes.AlertBox;
 import javafx.scene.control.Alert;
 import plot.Plot;
 import port.PortReader;
@@ -8,7 +9,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import purejavacomm.CommPortIdentifier;
-import purejavacomm.SerialPort;
 
 import java.net.URL;
 import java.util.Enumeration;
@@ -100,13 +100,13 @@ public class PortController implements Initializable
 
     public void onActionConnectButton()
     {
-        if ( connectButton.getText().equals("Connect"))
+        if (connectButton.getText().equals("Connect"))
         {
-            if ( null != selectPortComboBox.getSelectionModel().getSelectedItem() )
+            if (null != selectPortComboBox.getSelectionModel().getSelectedItem())
             {
                 String systemPortName = selectPortComboBox.getSelectionModel().getSelectedItem();
 
-                if (PortReader.getInstance().open(systemPortName, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE))
+                if (PortReader.getInstance().open(systemPortName))
                 {
                     connectButton.setText("Disconnect");
                     selectPortComboBox.setDisable(true);
@@ -120,12 +120,7 @@ public class PortController implements Initializable
                 {
                     Log.getInstance().log("An attempt to open the port was unsuccessful.");
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-
-                    alert.setTitle("Real Time Serial Plotter");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Port is already in use. Cannot open.");
-                    alert.showAndWait();
+                    new AlertBox(Alert.AlertType.WARNING).showAlertBox("Port is already in use. Cannot open.");
                 }
             }
         }

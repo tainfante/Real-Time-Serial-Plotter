@@ -5,28 +5,30 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<HBox alignment="BASELINE_LEFT" prefHeight="25.0" prefWidth="600.0" styleClass="background" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.PortController">
+<HBox alignment="BASELINE_LEFT" prefHeight="25.0" prefWidth="600.0" styleClass="background"
+      xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="mainwindow.PortController">
     <stylesheets>
-        <URL value="@../stylesheets/PortCSS.css" />
+        <URL value="@../stylesheets/PortCSS.css"/>
     </stylesheets>
     <padding>
-        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0"/>
     </padding>
-   <children>
-       <Label prefHeight="25.0" prefWidth="65.0" styleClass="labels" text="Port COM:" />
-      <ComboBox fx:id="selectPortComboBox" focusTraversable="false" onAction="#onActionPortComboBox" onMouseClicked="#onMouseClickedSelectPort" prefWidth="200.0" />
-       <Label onMouseClicked="#onMouseClickedSelectPort" prefHeight="29.0" prefWidth="55.0" styleClass="labels" text="Baudrate:">
-           <HBox.margin>
-           <Insets left="15.0" />
-           </HBox.margin>
-       </Label>
-      <ComboBox fx:id="selectBaudrateComboBox" editable="true" focusTraversable="false" onAction="#onActionSelectBaudrate" onDragEntered="#onActionSelectBaudrate" prefWidth="150.0" />
+    <Label prefHeight="25.0" prefWidth="65.0" styleClass="labels" text="Port COM:"/>
+    <ComboBox fx:id="selectPortComboBox" focusTraversable="false" onAction="#onActionPortComboBox"
+              onMouseClicked="#onMouseClickedSelectPort" prefWidth="200.0"/>
+    <Label onMouseClicked="#onMouseClickedSelectPort" prefHeight="29.0" prefWidth="55.0" styleClass="labels"
+           text="Baudrate:">
+        <HBox.margin>
+            <Insets left="15.0"/>
+        </HBox.margin>
+    </Label>
+    <ComboBox fx:id="selectBaudrateComboBox" editable="true" focusTraversable="false" onAction="#onActionSelectBaudrate"
+              onDragEntered="#onActionSelectBaudrate" prefWidth="150.0"/>
 
-       <Region maxWidth="Infinity" HBox.hgrow="ALWAYS" />
-       <Button fx:id="connectButton" focusTraversable="false" mnemonicParsing="false" onAction="#onActionConnectButton" styleClass="buttons" text="Connect">
-           <HBox.margin>
-           <Insets left="10.0" />
-           </HBox.margin>
-       </Button>
-   </children>
+    <Region maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+    <Button fx:id="connectButton" focusTraversable="false" mnemonicParsing="false" onAction="#onActionConnectButton" text="Connect">
+        <HBox.margin>
+            <Insets left="10.0"/>
+        </HBox.margin>
+    </Button>
 </HBox>

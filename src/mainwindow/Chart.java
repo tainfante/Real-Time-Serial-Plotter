@@ -1,5 +1,6 @@
 package mainwindow;
 
+import classes.AlertBox;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
@@ -135,9 +136,6 @@ public class Chart implements Initializable {
         checkSix.setStyle("-fx-text-fill:rgb(" + rgb6 + ");");
         checkSeven.setStyle("-fx-text-fill:rgb(" + rgb7 + ");");
         checkEight.setStyle("-fx-text-fill:rgb(" + rgb8 + ");");
-
-        //////////////////////////////////////////////////////////
-
     }
 
     public Chart() {
@@ -157,21 +155,13 @@ public class Chart implements Initializable {
             min = Double.parseDouble(MIN);
             max = Double.parseDouble(MAX);
             if (min > max) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Wrong data");
-                alert.setHeaderText("You have submitted wrong data");
-                alert.setContentText("Minimum value must be lower then the maximum");
-                alert.showAndWait();
+                new AlertBox(Alert.AlertType.ERROR).showAlertBox("You have submitted wrong data", "Minimum value must be lower then the maximum");
             }
             yAxis.setAutoRanging(false);
             yAxis.setLowerBound(min);
             yAxis.setUpperBound(max);
         } catch (NumberFormatException nfe) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Wrong data type");
-            alert.setHeaderText("You have submitted wrong data");
-            alert.setContentText("Please, set some numbers");
-            alert.showAndWait();
+            new AlertBox(Alert.AlertType.ERROR).showAlertBox("You have submitted wrong data", "Please, set some numbers");
         }
 
     }
@@ -450,11 +440,7 @@ public class Chart implements Initializable {
             try {
                 samples = Integer.parseInt(selectedTime);
             } catch (NumberFormatException num) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Wrong data type");
-                alert.setHeaderText("You have submitted wrong data");
-                alert.setContentText("Please, set some numbers");
-                alert.showAndWait();
+                new AlertBox(Alert.AlertType.ERROR).showAlertBox("You have submitted wrong data", "Please, set some numbers");
                 samples = 200;
             }
 

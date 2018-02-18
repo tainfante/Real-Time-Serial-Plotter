@@ -6,7 +6,6 @@ import javafx.scene.chart.XYChart;
 import mainwindow.Chart;
 import port.PortReader;
 import java.util.Date;
-
 import static mainwindow.Chart.*;
 
 public class Plot {
