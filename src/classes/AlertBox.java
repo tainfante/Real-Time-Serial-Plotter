@@ -1,15 +1,12 @@
 package classes;
 
 import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.*;
 
-public class AlertBox
+public class AlertBox extends Alert
 {
-    private AlertType type;
-
-    public AlertBox(AlertType type)
+    public AlertBox(AlertType alertType)
     {
-        this.type = type;
+        super(alertType);
     }
 
     public void showAlertBox(String message)
@@ -19,11 +16,9 @@ public class AlertBox
 
     public void showAlertBox(String header, String message)
     {
-        Alert alert = new Alert(type);
-
-        alert.setTitle("Real Time Serial Plotter");
-        alert.setHeaderText(header);
-        alert.setContentText(message);
-        alert.showAndWait();
+        setTitle("Real Time Serial Plotter");
+        setHeaderText(header);
+        setContentText(message);
+        showAndWait();
     }
 }
