@@ -14,15 +14,8 @@ public class Frame {
     public Frame(ArrayList<Integer> channelData)
     {
         this.channelData = channelData;
-        date = new GregorianCalendar().getTime();
-        int numberOfChannels=channelData.size();
-        setNumberOfChannels(numberOfChannels);
-    }
-    
-    //Setters
-
-    private void setNumberOfChannels(int numberOfChannels) {
-        this.numberOfChannels = numberOfChannels;
+        this.date = new GregorianCalendar().getTime();
+        this.numberOfChannels = channelData.size();
     }
 
     //Getters
@@ -37,6 +30,7 @@ public class Frame {
     public Date getTime() {
         return date;
     }
+
 
     public String toString(boolean checks[], String format)
     {

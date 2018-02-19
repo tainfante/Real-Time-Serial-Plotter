@@ -8,7 +8,7 @@ import port.PortReader;
 import java.util.Date;
 import static mainwindow.Chart.*;
 
-public class Plot {
+public final class Plot {
 
     private volatile boolean stop = false;
 
@@ -55,7 +55,7 @@ public class Plot {
 
                     for (int i = 8; i > numberOfChannels; i--) {
 
-                        int finalI = i;
+                        final int finalI = i;
 
                         Platform.runLater(() -> {
                             switch (finalI) {
@@ -131,7 +131,7 @@ public class Plot {
                         for(int i = 0; i < numberOfChannels; i++) {
 
                             final int removeData = series1.getData().size() - Chart.getInstance().numberOfSamples();
-                            int finalI = i;
+                            final int finalI = i;
 
                             Platform.runLater(() -> {
                               switch (finalI){
